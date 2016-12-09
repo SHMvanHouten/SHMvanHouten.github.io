@@ -1,0 +1,22 @@
+<!Doctype html>
+<html>
+<head>
+    <title>Dagboek</title>
+    <link rel="stylesheet" href="/css/sjoerd.css" type="text/css"/>
+</head>
+<body>
+<h1> Dagboek </h1>
+<hr Size=12>
+1. Wat is Github?<br>
+Git is een <strong>Version Control System </strong> <br>
+De dingen die Github uniek maken zijn fork, push en pull-request <br>
+2. Wat is Sourcetree <br>
+2.a Wat is push / pull<br>
+2.b Wat is Clone <br>
+2.c Wat is commit<br>
+2.d Wat is een branch? <br>
+3. Hoe kan ik command terminal openen <br>
+4. Hoe kan ik dit bestand editen? <br>
+Dit is een <a href="/memory.html"> link</a> naar memory!<br>
+</body>
+</html>

@@ -1,2 +1,9 @@
-/*memory
-.board {border-style: solid;}
+h1 {
+color: blue;
+ text-align: center;
+ }
+.col-md-2 {
+border-style: solid;
+background-color: blue;
+color:white;
+}

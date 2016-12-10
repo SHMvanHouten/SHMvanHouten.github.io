@@ -1,9 +1,17 @@
+body {
+background-color: #c7c8cc;
+}
 h1 {
+border-style: solid;
 color: blue;
  text-align: center;
  }
+ .board {
+ background-color: yellow;
+ }
 .col-md-2 {
 border-style: solid;
+border-color: black;
 background-color: blue;
 color:white;
 }

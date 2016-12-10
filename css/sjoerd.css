@@ -1,12 +1,3 @@
-@charset "utf-8"
-article, aside, folder, header, main, section {
-    display: block;
-}
-
-html, body, h1, h2, h3, h4, ul, li, a, p,
-article, aside, folder, header, main, section {
-    padding: 0;
-    margin: 0;}
 
 .banner {
     background-color: #6a870d;

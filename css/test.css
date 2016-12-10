@@ -1,0 +1,74 @@
+@charset "utf-8"
+article, aside, folder, header, main, section {
+    display: block;
+}
+
+html, body, h1, h2, h3, h4, ul, li, a, p,
+article, aside, folder, header, main, section {
+    padding: 0;
+    margin: 0;}
+
+.banner {
+    background-color: #6a870d;
+    color:white;
+    padding: 10px 20px;
+}
+
+body {
+    background-color: #f2eed7;
+}
+
+nav {
+    background-color: #e5e5dc;
+    padding: 5px;
+    margin-top: 1px;
+    text-align: center;
+}
+
+li a {
+    color: #c621bb;
+    font-size: 18px;
+    font-variant: small-caps;
+    font-weight: bold;
+    padding: 20px;
+}
+
+li {
+    display: inline;
+
+}
+
+section {
+    background-color: #c9c8b5;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+article {
+    background-color: white;
+    margin-top: 2px;
+    padding: 5px;
+}
+
+h2 {
+    padding: 5px;
+}
+
+aside {
+    float: right;
+    margin-top: 40px;
+    background-color:#c9c8b5;
+}
+
+main {
+    width: 1100px;
+    float: left
+}
+
+    footer {
+    clear: both;
+    background-color: #e5e5dc;
+    text-align:center;
+}

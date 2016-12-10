@@ -1,0 +1,46 @@
+.banner {
+    background-color: #6a870d;
+    color:white;
+    padding: 10px 20px;
+}
+
+body {
+    background-color: #f2eed7;
+}
+
+nav {
+    background-color: #e5e5dc;
+    padding: 5px;
+    margin-top: 1px;
+    text-align: center;
+}
+
+li a {
+    color: #c621bb;
+    font-size: 18px;
+    font-variant: small-caps;
+    font-weight: bold;
+    padding: 20px;
+}
+
+li {
+    display: inline;
+
+}
+
+/* memory specific */
+
+ .board {
+    background-color: yellow;
+    margin-top: 5px;
+    margin-bottom: 5px;
+ }
+.col-md-2 {
+    border-style: solid;
+    border-color: black;
+    background-color: blue;
+    color:white;
+    height: 195px;
+    padding-top: 40px:
+    padding-left:40px;
+}

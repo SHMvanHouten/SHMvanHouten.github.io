@@ -15,17 +15,16 @@ nav {
     text-align: center;
 }
 
-li a {
-    color: #c621bb;
+.mainlinks {
+    color: black;
     font-size: 18px;
     font-variant: small-caps;
     font-weight: bold;
     padding: 20px;
 }
 
-li {
+.topbar {
     display: inline;
-
 }
 
 /* memory specific */

@@ -1,11 +1,11 @@
 /* memory specific */
 
- .board {
+ .container {
     background-color: yellow;
     margin-top: 5px;
     margin-bottom: 5px;
  }
-.col-md-2 {
+.card {
     border-style: solid;
     border-color: black;
     background-color: blue;

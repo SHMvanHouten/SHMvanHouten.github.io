@@ -128,7 +128,7 @@ YahtzyScoreCheck.prototype.getScoreAsFourOfAKind = function(){
 };
 YahtzyScoreCheck.prototype.getScoreAsFullHouse = function() {
      if (this.isFullHouse()){
-            return 25 , this.addScoreBottomHalf(25);
+            return 25 , game.addToBottomHalfScore(25);
         }
         else {
             return 0;

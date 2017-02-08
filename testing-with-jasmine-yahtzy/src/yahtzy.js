@@ -1,5 +1,5 @@
 
-function YahtzyGame(die0, die1 ,die2, die3, die4) {
+function YahtzyScoreCheck(die0, die1 ,die2, die3, die4) {
     var dice = [die0, die1, die2, die3, die4].sort();
 
 	var totalScoreBottomHalf = 0;
@@ -112,21 +112,21 @@ function YahtzyGame(die0, die1 ,die2, die3, die4) {
 	};
 };
 
-YahtzyGame.prototype.showDice = function() {
+YahtzyScoreCheck.prototype.showDice = function() {
     return this.getDice();
 };
 
-YahtzyGame.prototype.getScoreAsThreeOfAKind = function(){
+YahtzyScoreCheck.prototype.getScoreAsThreeOfAKind = function(){
 	if(this.isThreeOfAKind()){
 	return this.giveAllDiceValuesAddedUp();
 	} else{return 0};
 };
-YahtzyGame.prototype.getScoreAsFourOfAKind = function(){
+YahtzyScoreCheck.prototype.getScoreAsFourOfAKind = function(){
 	if(this.isFourOfAKind()){
 	return this.giveAllDiceValuesAddedUp();
 	} else{return 0};
 };
-YahtzyGame.prototype.getScoreAsFullHouse = function() {
+YahtzyScoreCheck.prototype.getScoreAsFullHouse = function() {
      if (this.isFullHouse()){
             return 25 , this.addScoreBottomHalf(25);
         }
@@ -134,7 +134,7 @@ YahtzyGame.prototype.getScoreAsFullHouse = function() {
             return 0;
         }
 };
-YahtzyGame.prototype.getScoreAsSmallStraight = function() {
+YahtzyScoreCheck.prototype.getScoreAsSmallStraight = function() {
      if (this.isSmallStraight()){
             return 30;
         }
@@ -142,7 +142,7 @@ YahtzyGame.prototype.getScoreAsSmallStraight = function() {
             return 0;
         }
 };
-YahtzyGame.prototype.getScoreAsLargeStraight = function() {
+YahtzyScoreCheck.prototype.getScoreAsLargeStraight = function() {
      if (this.isLargeStraight()){
             return 40;
         }
@@ -150,7 +150,7 @@ YahtzyGame.prototype.getScoreAsLargeStraight = function() {
             return 0;
         }
 };
-YahtzyGame.prototype.getScoreAsYahtzy = function() {
+YahtzyScoreCheck.prototype.getScoreAsYahtzy = function() {
      if (this.isYahtzy()){
             return 50;
         }
@@ -158,31 +158,31 @@ YahtzyGame.prototype.getScoreAsYahtzy = function() {
             return 0;
         }
 };
-YahtzyGame.prototype.getScoreAsChance = function() {
+YahtzyScoreCheck.prototype.getScoreAsChance = function() {
 	 return this.giveAllDiceValuesAddedUp();
 };
-YahtzyGame.prototype.getScoreAsOnes = function() {
+YahtzyScoreCheck.prototype.getScoreAsOnes = function() {
 	 return this.giveAddedUpXs(0);
 };
-YahtzyGame.prototype.getScoreAsTwos = function() {
+YahtzyScoreCheck.prototype.getScoreAsTwos = function() {
 	 return this.giveAddedUpXs(1);
 };
-YahtzyGame.prototype.getScoreAsThrees = function() {
+YahtzyScoreCheck.prototype.getScoreAsThrees = function() {
 	 return this.giveAddedUpXs(2);
 };
-YahtzyGame.prototype.getScoreAsFours = function() {
+YahtzyScoreCheck.prototype.getScoreAsFours = function() {
 	 return this.giveAddedUpXs(3);
 };
-YahtzyGame.prototype.getScoreAsFives = function() {
+YahtzyScoreCheck.prototype.getScoreAsFives = function() {
 	 return this.giveAddedUpXs(4);
 };
-YahtzyGame.prototype.getScoreAsSixes = function() {
+YahtzyScoreCheck.prototype.getScoreAsSixes = function() {
 	 return this.giveAddedUpXs(5);
 };
-YahtzyGame.prototype.checkForIncorrectInput = function() {
+YahtzyScoreCheck.prototype.checkForIncorrectInput = function() {
 	 return this.checkForWrongNumbers();
 };
-YahtzyGame.prototype.showScoreBottomHalf = function() {
+YahtzyScoreCheck.prototype.showScoreBottomHalf = function() {
 	 return this.getScoreBottomHalf();
 };
 

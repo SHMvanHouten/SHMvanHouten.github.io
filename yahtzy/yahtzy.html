@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/sjoerd.css">
+    <script src="yahtzyscorecheck.js"></script>
+    <script src="yahtzyvisualiser.js"></script>
+    <script src="game.js"></script>
+    <script>
+        function newGame(){
+            var playerNames = ["player1", "player2"];
+            var scoreTypes = ["Ones","Twos","Threes","Fours","Fives","Sixes","ThreeOfAKind","FourOfAKind","Yahtzy","FullHouse","SmallStraight","LargeStraight","Chance"];
+            var indexOfScoreTypesBottomScore = 6;
+            var visualiser = new Visualiser(indexOfScoreTypesBottomScore, scoreTypes);
+            var scoreChecker = new YahtzyScoreCheck();
+            return new YahtzyGame(playerNames, visualiser, scoreChecker, scoreTypes, indexOfScoreTypesBottomScore);
+
+        };
+
+    </script>
+</head>
+<body onload="game = newGame()">
+
+</body>
+</html>

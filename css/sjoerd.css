@@ -53,8 +53,8 @@ aside {
 }
 
 main {
+    margin: auto;
     width: 1100px;
-    float: left
 }
 
     footer {

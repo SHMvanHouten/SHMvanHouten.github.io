@@ -15,10 +15,66 @@
         <ul>
             <li class="topbar"><a class=mainlinks href="index.html">home</a></li>
             <li class="topbar"><a class=mainlinks href="journal.html">journal</a></li>
-            <li class="topbar"><a class=mainlinks href="memory.html">memory</a></li>
+            <li class="topbar"><a class=mainlinks href="yahtzy/yahtzy.html">yahtzee</a></li>
         </ul>
     </nav>
     <main>
+        <section>
+            <h2>Learning Java, week 2</h2>
+            <article>
+                <article>
+                    Welcome back to week 2 of my journey through the wonderfully mind boggling world of Java.<br>
+                    <br>
+                    In our get together on week 2 we discussed a variety of topics. Our homework assignment made use of a few of these topics. Week 3 was basically a revision of our homework and therefore a reinforcement of the topic we discussed in week 2. This means that I can just concatenate the two weeks into one journal entry!<br>
+                    <br>
+                    The way I will be describing the topics we discussed will follow along with the structure of the lesson. The test case in the lesson was to create a list of persons and see what you can do with such a list and what methods come into play when creating and handling a list. The code for it can be found on: <a href=”https://github.com/SHMvanHouten/javatraining”>https://github.com/SHMvanHouten/javatraining</a> under lesson 2. The PersonTest pretty much follows along the structure of the lesson and therefore this journal entry.<br>
+                    <br>
+                    The persons we can put in the list can be made through the constructor Person. It has three identifiers: firstName, lastName and dateOfBirth.<br>
+                    Let’s talk about dateOfBirth first. java.time.LocalDate. We had a small history lesson about using dates and times in Java. I am not going to repeat that lesson and just repeat the conclusion of the lesson, namely to use the java.time api for dates and time, and not the java.date which is obsolete. I think <a href=”https://www.infoq.com/articles/java.time”>this article</a> could be enlightening for anyone who has any interest in more information on the subject.<br>
+                    Moving on, we will be using java.time.LocalDate.of which gives us a nice format to enter our dates into and java.time.month to be able to type in the month instead of a number so it looks a bit prettier.<br>
+                    <br>
+                    <h3>Override, equals and hashcode</h3><br>
+                    So now we can make persons that have a first and last name and a date of birth. First we looked at how we could see if a person was already added to the list, this would require a method that see if one object equals another. Fortunately the parent class for our Person object; java.lang.Object has a method for us called equals. Unfortunately, this will not get us what we need.<br>
+                    When we create a new person with the Person constructor, the java engine will give that person a spot on the heap where it can access it. Now if we create a person2 with the exact same attributes it will get a different spot on the heap. <br>
+                    For our purposes, the first person should be exactly the same as the second person, because it is exactly the same in every attribute it has. However, the equal method does distinguish them to be different people, since they are in two different spots on the heap.<br>
+                    That means we will need to <strong>Override</strong> the equals method in our Person object. We could just declare the equals method in our Person class and make it do what we want because when the method is invoked it will look in the child class Person before it looks in the parent class Object. This is called overriding.<br>
+                    Before we do this we have to declare @Override. This serves two purposes. First, it makes it clear to other programmers (and our future selves) that we are overriding an existing method. Second, this will cause the compiler to check if we are indeed overriding a method, thus warning you if you have made a mistake and are in fact <em>not</em> overriding anything.<br>
+                    <br>
+                    Now that we have warned the compiler that we are overriding a parent method, we can think about how we want to make the equals method do what we want it to do. If you click <a href=”https://github.com/SHMvanHouten/javatraining/blob/master/src/main/java/com/github/shmvanhouten/lesson2/Person.java”>this link</a> you can see what we did on line 19.<br>
+                    <pre>
+    @Override
+    public boolean equals(Object obj) {
+        System.out.println("Equals called to compare " + this + " with " +  obj);
+        if (obj instanceof Person) {
+            Person other = (Person) obj;
+            if (this.firstName.equals(other.getFirstName())
+                    && this.lastName.equals(other.getLastName())
+                    && this.dateOfBirth.equals(other.getDateOfBirth())) {
+                return true;
+            }
+        }
+        return false;
+    }
+                    </pre>
+                    What we basically do is we compare the object we are currently in, this, to another object we give as the argument. What we compare is the identifiers for both objects, so if all the identifiers are the same, the objects will be the same. Mission accomplished!<br>
+                    <br>
+                    But we’re not quite there yet. When we will be working with hash sets, which only accepts unique elements. The way it compares these elements however is it uses the hashcode for the object. Every object inherits a method that produces a hash code from java.lang.Object. The hash code will be unique to that object. This create the same problem we had with the equals method: it won’t recognize two objects that have exactly the same identifiers because they will still have different hash codes.<br>
+                    Solution: we must override the hashcode!<br>
+                    <pre>
+@Override
+public int hashCode() {
+   return this.firstName.charAt(0);
+}
+                    </pre>
+                    So now all Persons with the same starting letter in their first name will have the same hashcode (their unichar code).<br>
+                    Once the hash set has determined that two Person instances have the same hashcode, it will use the equals method to check if they are indeed the same, thus performing the check we need!<br>
+                    Whenever you change the equals method you should probably change the hashCode method too.<br>
+                    This all seems very complicated, but thankfully we have intelliJ to do a lot of the work for us! We can use <em>alt insert</em> to create an override method for equals, and because equals and hashCode go together like a horse and carriage it will suggest equals() and hashCode() in one line!<br>
+                    <br>
+
+                </article>
+            </article>
+        </section>
         <section>
             <h2>Learning Java, week 1</h2>
             <article>
@@ -70,8 +126,8 @@
                     Our homework was to do the tennis kata in Java, where you basically have to build a program that can determine what score it is given a number of point scored by each player. The results of this homework assignment are <a href="https://github.com/SHMvanHouten/tennis">here</a>.
                 </p>
             </article>
-
         </section>
+
 
     </main>
 </body>

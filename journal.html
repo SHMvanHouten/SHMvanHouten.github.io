@@ -69,7 +69,24 @@ public int hashCode() {
                     Whenever you change the equals method you should probably change the hashCode method too.<br>
                     This all seems very complicated, but thankfully we have IntelliJ to do a lot of the work for us! We can use <em>alt insert</em> to create an override method for equals, and because equals and hashCode go together like a horse and carriage it will suggest equals() and hashCode() in one line!<br>
                     <br>
-                <h3>Lists sets and maps</h3>
+                <h3>Overriding the toString</h3>
+                Great! We can now change the equals() and hashCode() methods. There is one more thing we need to do before we can go to our lists though. When we System.out.println our objects right now it will just print the name the object got in the heap.
+                This is not very useful for us so we will have to override the Person toString() method.<br>
+                So let’s use our newly acquired IntelliJ skills and use alt insert to create the toString override method.
+                This is what our IDE makes for us:<br>
+                <pre>
+@Override
+public String toString() {
+   return "Person{" +
+           "firstName='" + firstName + '\'' +
+           ", lastName='" + lastName + '\'' +
+           ", dateOfBirth=" + dateOfBirth +
+           '}';
+}</pre>
+                Now the toString() method will return a nice string with our objects and all it’s identifiers. Perfect!<br>
+                <br>
+
+                <h3>Lists, sets and maps</h3>
                 Now we can start making lists, sets and maps!<br>
                 First let’s look at the differences between the three.<br>
                 Lists and sets are both collections of elements, map collects key value pairs.<br>
@@ -92,7 +109,7 @@ persons.add(casper);
 persons.add(marco);
 persons.add(sjoerd);
 persons.add(simone);</pre><br>
-                So here we see something new: when making a list we have to declare what type of object we will be adding in the lists. In our case it’s instances of the Person constructor. So we type that inside the %lt %gt braces. We can then add our instanced Persons by using the .add() method.
+                So here we see something new: when making a list we have to declare what type of object we will be adding in the lists. In our case it’s instances of the Person constructor. So we type that inside the &lt &gt braces. We can then add our instanced Persons by using the .add() method.
                 <h4>sorting</h4>
                 So what if we want to sort our list? We can just use the java.Collections.sort() method.
                 <pre>
@@ -100,6 +117,38 @@ Collections.sort(persons);</pre>
                 This gives us an error: no suitable method found for sort.<br>
                 The sort() method has no way to compare two person instances. We first need to give it a method to compare them. We can do this two different ways. Creating a comparator class which we can give as an extra argument to our sort() method, or giving the Person class its own compareTo() method.<br>
                 <h4>Comparator.compare() method</h4>
+                <h4>Comparator.compare() method</h4>
+                What does the comparator need to do? It has to compare one item in the list with another item. The sort() method can then use the comparator for each pair of elements in the list it needs to compare.<br>
+                The return type for the comparator will be an integer, if the int is negative, the first person will come before the second. If the return int is positive, the second will come  before the first. 0 will mean they are the same.<br>
+                <pre>
+import java.util.Comparator;
+
+public class PersonByLastNameComparator implements Comparator&ltPerson&gt {
+
+   @Override
+   public int compare(Person first, Person second) {
+       int byLastName = first.getLastName().compareTo(second.getLastName());
+       if (byLastName != 0) {
+           return byLastName;
+       }
+int byFirstName = first.getFirstName().compareTo(second.getFirstName());
+if(byFirstName != 0){
+   return byFirstName;
+}
+return first.getDateOfBirth().compareTo(second.getDateOfBirth());
+}</pre>
+                So the sort() method uses the compare() method with the two elements it wants to sort as arguments. First it uses the compareTo() method for the String we get from the getLastName() method of our Person objects. This integer will be the byLastName variable, if it is not zero, the value of byLastName will be our return value, if it is zero, we will do the same for the firstName of both our Persons etc.<br>
+                <br>
+                <h4>Overriding the CompareTo() method of Person</h4>
+                The other way to make the sort() method be able to sort our Person objects is to implement Comparator&ltPerson&gt directly on our Person class and overriding the compareTo function it’s now inherited from the Comparator. In our example we just want to sort on date of birth, so this is what we do:<br>
+                <pre>
+@Override
+public int compareTo(Person other) {
+   return this.dateOfBirth.compareTo(other.getDateOfBirth());
+}</pre>
+                <br>
+                <h3>Sets</h3>
+
             </article>
         </section>
         <section>
@@ -152,6 +201,7 @@ Collections.sort(persons);</pre>
                 <br>
                     Our homework was to do the tennis kata in Java, where you basically have to build a program that can determine what score it is given a number of point scored by each player. The results of this homework assignment are <a href="https://github.com/SHMvanHouten/tennis">here</a>.
                 </p>
+
             </article>
         </section>
 

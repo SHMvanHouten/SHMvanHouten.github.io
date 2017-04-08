@@ -103,7 +103,7 @@ Person casper = new Person("Casper", "Beelen", of(2015, APRIL, 17));
 Person sjoerd = new Person("Sjoerd", "Houten, van", of(1983, MARCH, 12));
 Person simone = new Person("Simone", "Kamer", of(1981, JULY, 1));
 
-List<Person> persons = new ArrayList<>();
+List&ltPerson&gt persons = new ArrayList&lt&gt();
 
 persons.add(casper);
 persons.add(marco);
@@ -116,7 +116,6 @@ persons.add(simone);</pre><br>
 Collections.sort(persons);</pre>
                 This gives us an error: no suitable method found for sort.<br>
                 The sort() method has no way to compare two person instances. We first need to give it a method to compare them. We can do this two different ways. Creating a comparator class which we can give as an extra argument to our sort() method, or giving the Person class its own compareTo() method.<br>
-                <h4>Comparator.compare() method</h4>
                 <h4>Comparator.compare() method</h4>
                 What does the comparator need to do? It has to compare one item in the list with another item. The sort() method can then use the comparator for each pair of elements in the list it needs to compare.<br>
                 The return type for the comparator will be an integer, if the int is negative, the first person will come before the second. If the return int is positive, the second will come  before the first. 0 will mean they are the same.<br>
@@ -147,7 +146,12 @@ public int compareTo(Person other) {
    return this.dateOfBirth.compareTo(other.getDateOfBirth());
 }</pre>
                 <br>
-                <h3>Sets</h3>
+                <h3>Some final things about Sets</h3>
+                I already discussed that all of set’s elements must be unique. This is demonstrated in the PersonTest.java class where we try to add a mcbeelen instance of Person which has the same identifiers as marco. The mcbeelen class therefore doesn’t get added to the set. As we have seen a normal HashSet won’t have an order we can rely on but we can create a class that can be sorted: TreeSet.<br>
+                <br>
+                So that was the lesson of week 2. Quite a lot of information to take in, so week 3 was just revising our homework and expanding upon it. The homework assignment was to make a program where a store employee can register all products and their use by dates. That assignment can be found <a href="https://github.com/SHMvanHouten/javahomework/tree/master/StoreBalance">here</a>.<br>
+                The assignment for next week is to add a price to all the products and for a way to see the total worth of a product or even the whole stock.
+
 
             </article>
         </section>

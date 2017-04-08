@@ -28,11 +28,12 @@
                     <br>
                     The way I will be describing the topics we discussed will follow along with the structure of the lesson. The test case in the lesson was to create a list of persons and see what you can do with such a list and what methods come into play when creating and handling a list. The code for it can be found on: <a href="https://github.com/SHMvanHouten/javatraining">https://github.com/SHMvanHouten/javatraining</a> under lesson 2. The PersonTest pretty much follows along the structure of the lesson and therefore this journal entry.<br>
                     <br>
+                    <h3>java.time</h3>
                     The persons we can put in the list can be made through the constructor Person. It has three identifiers: firstName, lastName and dateOfBirth.<br>
                     Let’s talk about dateOfBirth first. java.time.LocalDate. We had a small history lesson about using dates and times in Java. I am not going to repeat that lesson and just repeat the conclusion of the lesson, namely to use the java.time api for dates and time, and not the java.date which is obsolete. I think <a href="https://www.infoq.com/articles/java.time">this article</a> could be enlightening for anyone who has any interest in more information on the subject.<br>
                     Moving on, we will be using java.time.LocalDate.of which gives us a nice format to enter our dates into and java.time.month to be able to type in the month instead of a number so it looks a bit prettier.<br>
                     <br>
-                    <h3>Override, equals and hashcode</h3><br>
+                    <h3>Override, equals and hashcode</h3>
                     So now we can make persons that have a first and last name and a date of birth. First we looked at how we could see if a person was already added to the list, this would require a method that see if one object equals another. Fortunately the parent class for our Person object; java.lang.Object has a method for us called equals. Unfortunately, this will not get us what we need.<br>
                     When we create a new person with the Person constructor, the java engine will give that person a spot on the heap where it can access it. Now if we create a person2 with the exact same attributes it will get a different spot on the heap. <br>
                     For our purposes, the first person should be exactly the same as the second person, because it is exactly the same in every attribute it has. However, the equal method does distinguish them to be different people, since they are in two different spots on the heap.<br>
@@ -53,8 +54,7 @@
             }
         }
         return false;
-    }
-                    </pre>
+    }                    </pre>
                     What we basically do is we compare the object we are currently in, this, to another object we give as the argument. What we compare is the identifiers for both objects, so if all the identifiers are the same, the objects will be the same. Mission accomplished!<br>
                     <br>
                     But we’re not quite there yet. When we will be working with hash sets, which only accepts unique elements. The way it compares these elements however is it uses the hashcode for the object. Every object inherits a method that produces a hash code from java.lang.Object. The hash code will be unique to that object. This create the same problem we had with the equals method: it won’t recognize two objects that have exactly the same identifiers because they will still have different hash codes.<br>
@@ -63,14 +63,43 @@
 @Override
 public int hashCode() {
    return this.firstName.charAt(0);
-}
-                    </pre>
+}                    </pre>
                     So now all Persons with the same starting letter in their first name will have the same hashcode (their unichar code).<br>
                     Once the hash set has determined that two Person instances have the same hashcode, it will use the equals method to check if they are indeed the same, thus performing the check we need!<br>
                     Whenever you change the equals method you should probably change the hashCode method too.<br>
-                    This all seems very complicated, but thankfully we have intelliJ to do a lot of the work for us! We can use <em>alt insert</em> to create an override method for equals, and because equals and hashCode go together like a horse and carriage it will suggest equals() and hashCode() in one line!<br>
+                    This all seems very complicated, but thankfully we have IntelliJ to do a lot of the work for us! We can use <em>alt insert</em> to create an override method for equals, and because equals and hashCode go together like a horse and carriage it will suggest equals() and hashCode() in one line!<br>
                     <br>
+                <h3>Lists sets and maps</h3>
+                Now we can start making lists, sets and maps!<br>
+                First let’s look at the differences between the three.<br>
+                Lists and sets are both collections of elements, map collects key value pairs.<br>
+                <h4>Duplicates</h4>
+                List allows duplicate elements, as I mentioned earlier set does not. Map cannot contain duplicate keys, but values may be identical.<br>
+                <h4>Order</h4>
+                List will maintain the order in which the elements have been inserted. Set will not have a guaranteed order in which the elements are stored.<br>
+                <br>
+                <h3>Lists and sorting</h3>
+                So let’s look at lists first. Here’s the list we made in our lesson 2:<br>
+                <pre>
+Person marco = new Person("Marco", "Beelen", of(1977, JUNE, 27));
+Person casper = new Person("Casper", "Beelen", of(2015, APRIL, 17));
+Person sjoerd = new Person("Sjoerd", "Houten, van", of(1983, MARCH, 12));
+Person simone = new Person("Simone", "Kamer", of(1981, JULY, 1));
 
+List<Person> persons = new ArrayList<>();
+
+persons.add(casper);
+persons.add(marco);
+persons.add(sjoerd);
+persons.add(simone);</pre><br>
+                So here we see something new: when making a list we have to declare what type of object we will be adding in the lists. In our case it’s instances of the Person constructor. So we type that inside the %lt %gt braces. We can then add our instanced Persons by using the .add() method.
+                <h4>sorting</h4>
+                So what if we want to sort our list? We can just use the java.Collections.sort() method.
+                <pre>
+Collections.sort(persons);</pre>
+                This gives us an error: no suitable method found for sort.<br>
+                The sort() method has no way to compare two person instances. We first need to give it a method to compare them. We can do this two different ways. Creating a comparator class which we can give as an extra argument to our sort() method, or giving the Person class its own compareTo() method.<br>
+                <h4>Comparator.compare() method</h4>
             </article>
         </section>
         <section>

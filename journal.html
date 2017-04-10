@@ -44,7 +44,6 @@
                     <pre>
     @Override
     public boolean equals(Object obj) {
-        System.out.println("Equals called to compare " + this + " with " +  obj);
         if (obj instanceof Person) {
             Person other = (Person) obj;
             if (this.firstName.equals(other.getFirstName())

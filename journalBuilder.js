@@ -2,6 +2,7 @@ hasArticleBeenOpened = {};
 
 function getEntry(entry){
     var client = new HttpClient();
+    console.log("clicked");
 
     this.getArticle = function(){
         if(hasArticleBeenOpened[entry]){

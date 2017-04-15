@@ -23,11 +23,18 @@
             <h2 onclick="getClient()">Learning Java, week 2</h2>
             <script>
                 var client = new HttpClient();
+                var hasArticleBeenOpened = false;
                 function getClient(){
-                    client.get('/entry3.html', function(response){
-                        entry = document.getElementById("entry3");
-                        entry.innerHTML = response;
-                    })
+                    if(hasArticleBeenOpened){
+                        document.getElementById("entry3").innerHTML = "";
+                        hasArticleBeenOpened = false;
+                    }else{
+                        client.get('/entry3.html', function(response){
+                            entry = document.getElementById("entry3");
+                            entry.innerHTML = response;
+                        })
+                        hasArticleBeenOpened = true;
+                    }
                 }
                 function HttpClient() {
                     this.get = function(aUrl, aCallback) {

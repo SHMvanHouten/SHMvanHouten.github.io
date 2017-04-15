@@ -5,11 +5,9 @@ function EntryGetter(entry){
 
     this.getArticle = function(){
         if(hasArticleBeenOpened){
-            console.log("close");
             document.getElementById(entryName).innerHTML = "";
             hasArticleBeenOpened = false;
         }else{
-            console.log("open");
             client.get('/' + entryName, function(response){
                 entry = document.getElementById(entryName);
                 entry.innerHTML = response;

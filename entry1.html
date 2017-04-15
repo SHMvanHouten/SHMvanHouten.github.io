@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<p>
+    For a few months now I have been learning about HTML, CSS and JavaScript. While I did have the intention to keep a journal to record my experiences with JavaScript it just didn’t happen. Frankly I enjoy screwing around with the language a lot more that writing about it and after having had a few months to learn the language the backlog of things to talk about was getting a bit overwhelming.<br>
+    <br>
+    However, now that my co-apprentice Simone and I have just switched over to Java, under the wise tutelage of Marco Beelen, I have decided to change my ways and become a good student and start to record my experiences with Java and the things I have learned about it.<br>
+    <br>
+    On the evening of thursday the 23rd of March we had our first look at Java.<br>
+    From just looking at the syntax of the language it seems pretty obvious to me that Java is an OOP (object oriented programming) language. So learning Java is also a good way to solidify my knowledge of this style of programming. Whilst I did try to do OOP in JavaScript I was still a little unsure on how to do it precisely so it will be nice to be “forced” to use it in Java.<br>
+    <br>
+    The first terms we discussed were SDK/JDK (System/Java Development Kit) and JRE (Java Runtime Engine).<br>
+    We discussed how the goal of Java’s design was for it to have as few implementation dependencies as possible. This means that you can run Java on any platforms that supports it. It does this through the JVM (Java Virtual Machine).<br>
+    The process is: the code written by the programmer in .java file(s) will be compiled by the javac (java compiler) (often through the IDE) into bytecode in .class files.<br>
+    These .class files all go into a .jar file.<br>
+<pre>
+                Java Code------>bytecode<br>
+                .Java------------->.class<br>
+                        compiler<br>
+                </pre>
+The Java program can be run in a Java Virtual Machine. This then search for the classes in the .jar file and “compiles the bytecode into machine language so that the machine can run the code”.<br>
+<br>
+Having got the introductory look at the framework out of the way we came across some other terms.<br>
+Maven, Hamcrest, Junit.<br>
+<a href="https://en.wikipedia.org/wiki/Apache_Maven">https://en.wikipedia.org/wiki/Apache_Maven</a><br>
+<br>
+Junit is the unit testing framework we use to use test driven development.<br>
+hamcrest adds assertThat and is to our tests. <a href="https://code.google.com/archive/p/hamcrest/wikis/Tutorial.wiki">https://code.google.com/archive/p/hamcrest/wikis/Tutorial.wiki</a><br>
+<br>
+Next we had time to look at the language itself.<br>
+Although it looks quite a bit like Javascript it’s also very different and I have to say it doesn’t really feel as fluent yet as when I program with JS.<br>
+On the other hand I look forward to the fact that Java is more explicitly an object oriented language and I think learning Java will help me to further increase my knowledge of OOP as well.<br>
+In JS you just define variables with var, this could be any type of variable, so a string, a number, an object. In Java you have to define what kind of variable you are creating, so if you want to make a string you have to define it as String myString = “example”;<br>
+Also if the field or method is not inside a block scope you can also say who has access to that field or method.<br>
+public: everything has access.<br>
+protected: the class itself, classes in the package and the subclasses of the class have access.<br>
+no modifier(package lvl access): the class itself and classes in the package have access.<br>
+Private: only the class itself has access.<br>
+<br>
+When creating a method you also have to specify what it should return: a string, an integer, a floating point number, etc. Void means the method doesn’t return a value.<br>
+For example:<br>
+Public String sayHello(String name){};<br>
+Private Void addScore(int amountOfScoreToAdd){};<br>
+<br>
+As you can see parameters given with the method must also be specified what type they are.<br>
+<br>
+That is pretty much what we discussed this lesson. We also immediately started using TDD as we were used to with JS, but that is maybe a subject for another time.<br>
+<br>
+Our homework was to do the tennis kata in Java, where you basically have to build a program that can determine what score it is given a number of point scored by each player. The results of this homework assignment are <a href="https://github.com/SHMvanHouten/tennis">here</a>.
+</p>
+
+</body>
+</html>

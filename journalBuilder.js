@@ -1,23 +1,21 @@
-function getEntry(entry){
-    getter = new ArticleGetter(entry);
-    getter.getArticle();
-}
+hasArticleBeenOpened = {};
 
-function ArticleGetter(entry){
+function getEntry(entry){
     var client = new HttpClient();
-    var hasArticleBeenOpened = false;
+
     this.getArticle = function(){
-        if(hasArticleBeenOpened){
+        if(hasArticleBeenOpened[entry]){
             document.getElementById(entry).innerHTML = "";
-            hasArticleBeenOpened = false;
+            hasArticleBeenOpened[entry] = false;
         }else{
             client.get('/' + entry, function(response){
                 entry = document.getElementById(entry);
                 entry.innerHTML = response;
             })
-            hasArticleBeenOpened = true;
+            hasArticleBeenOpened[entry] = true;
         }
     }
+    this.getArticle();
 }
 function HttpClient() {
     this.get = function(aUrl, aCallback) {

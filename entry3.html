@@ -6,5 +6,22 @@
 <body>
 
 Welcome back to week 4 of learning java!<br>
+In our get together on week 2 we discussed a variety of topics. Our homework assignment made use of a few of these topics. Week 3 was basically a revision of our homework and therefore a reinforcement of the topic we discussed in week 2. This means that I can just concatenate the two weeks into one journal entry!<br>
+<br>
+The way I will be describing the topics we discussed will follow along with the structure of the lesson. The test case in the lesson was to create a list of persons and see what you can do with such a list and what methods come into play when creating and handling a list. The code for it can be found on: <a href="https://github.com/SHMvanHouten/javatraining">https://github.com/SHMvanHouten/javatraining</a> under lesson 2. The PersonTest pretty much follows along the structure of the lesson and therefore this journal entry.<br>
+<br>
+<h3>java.time</h3>
+The persons we can put in the list can be made through the constructor Person. It has three identifiers: firstName, lastName and dateOfBirth.<br>
+Let’s talk about dateOfBirth first. java.time.LocalDate. We had a small history lesson about using dates and times in Java. I am not going to repeat that lesson and just repeat the conclusion of the lesson, namely to use the java.time api for dates and time, and not the java.date which is obsolete. I think <a href="https://www.infoq.com/articles/java.time">this article</a> could be enlightening for anyone who has any interest in more information on the subject.<br>
+Moving on, we will be using java.time.LocalDate.of which gives us a nice format to enter our dates into and java.time.month to be able to type in the month instead of a number so it looks a bit prettier.<br>
+<br>
+<h3>Override, equals and hashcode</h3>
+So now we can make persons that have a first and last name and a date of birth. First we looked at how we could see if a person was already added to the list, this would require a method that see if one object equals another. Fortunately the parent class for our Person object; java.lang.Object has a method for us called equals. Unfortunately, this will not get us what we need.<br>
+When we create a new person with the Person constructor, the java engine will give that person a spot on the heap where it can access it. Now if we create a person2 with the exact same attributes it will get a different spot on the heap. <br>
+For our purposes, the first person should be exactly the same as the second person, because it is exactly the same in every attribute it has. However, the equal method does distinguish them to be different people, since they are in two different spots on the heap.<br>
+That means we will need to <strong>Override</strong> the equals method in our Person object. We could just declare the equals method in our Person class and make it do what we want because when the method is invoked it will look in the child class Person before it looks in the parent class Object. This is called overriding.<br>
+Before we do this we have to declare @Override. This serves two purposes. First, it makes it clear to other programmers (and our future selves) that we are overriding an existing method. Second, this will cause the compiler to check if we are indeed overriding a method, thus warning you if you have made a mistake and are in fact <em>not</em> overriding anything.<br>
+<br>
+Now that we have warned the compiler that we are overriding a par
 </body>
 </html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yahtzee</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="yahtzy/css/sjoerd.css">
+    <link rel="stylesheet" href="css/sjoerd.css" type="text/css"/>
+    <script src="yahtzy/yahtzyscorecheck.js"></script>
+    <script src="yahtzy/yahtzyvisualiser.js"></script>
+    <script src="yahtzy/game.js"></script>
+    <script>
+        function newGame(){
+            var playerNames = ["player1", "player2"];
+            var scoreTypes = ["Ones","Twos","Threes","Fours","Fives","Sixes","ThreeOfAKind","FourOfAKind","Yahtzy","FullHouse","SmallStraight","LargeStraight","Chance"];
+            var indexOfScoreTypesBottomScore = 6;
+            var visualiser = new Visualiser(indexOfScoreTypesBottomScore, scoreTypes);
+            var scoreChecker = new YahtzyScoreCheck();
+            return new YahtzyGame(playerNames, visualiser, scoreChecker, scoreTypes, indexOfScoreTypesBottomScore);
+
+        };
+
+    </script>
+</head>
+<body onload="game = newGame()">
+<header class="banner">
+    <h1>Yahtzee</h1>
+    <p>Or Yahtzy depending where you're from!</p>
+</header>
+<nav>
+    <ul>
+        <li class="topbar"><a class=mainlinks href="index.html">home</a></li>
+        <li class="topbar"><a class=mainlinks href="journal.html">journal</a></li>
+        <li class="topbar"><a class=mainlinks href="yahtzy/yahtzy.html">yahtzee</a></li>
+    </ul>
+</nav>
+
+</body>
+</html>

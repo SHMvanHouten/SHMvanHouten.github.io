@@ -1,15 +1,22 @@
-var client = new HttpClient();
-var hasArticleBeenOpened = false;
-function getClient(entry){
-    if(hasArticleBeenOpened){
-        document.getElementById(entry).innerHTML = "";
-        hasArticleBeenOpened = false;
-    }else{
-        client.get('/' + entry, function(response){
-            entry = document.getElementById("entry3");
-            entry.innerHTML = response;
-        })
-        hasArticleBeenOpened = true;
+function getEntry(entry){
+    getter = new ArticleGetter(entry);
+    getter.getArticle();
+}
+
+function ArticleGetter(entry){
+    var client = new HttpClient();
+    var hasArticleBeenOpened = false;
+    this.getArticle = function(){
+        if(hasArticleBeenOpened){
+            document.getElementById(entry).innerHTML = "";
+            hasArticleBeenOpened = false;
+        }else{
+            client.get('/' + entry, function(response){
+                entry = document.getElementById("entry3");
+                entry.innerHTML = response;
+            })
+            hasArticleBeenOpened = true;
+        }
     }
 }
 function HttpClient() {

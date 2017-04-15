@@ -12,7 +12,7 @@ function ArticleGetter(entry){
             hasArticleBeenOpened = false;
         }else{
             client.get('/' + entry, function(response){
-                entry = document.getElementById("entry3");
+                entry = document.getElementById(entry);
                 entry.innerHTML = response;
             })
             hasArticleBeenOpened = true;

@@ -46,7 +46,7 @@ Visualiser.prototype.createPlayingField = function(scoreTypes){
     diceField.appendChild(rollButton);
     for (let i = 0; i< 5; i++){
         var die = document.createElement("img");
-        die.src = "img/empty.png";
+        die.src = "yahtzy/img/empty.png";
         die.id = "die" + i;
         diceField.appendChild(die);
         die.addEventListener("click",function(){game.selectForReRoll(i);},false)
@@ -84,7 +84,7 @@ Visualiser.prototype.addScore = function(typeIndex, score){
     }
 };
 Visualiser.prototype.changeDie = function (index, value){
-    document.getElementById("die" + index).src = "img/"+(value)+".png";
+    document.getElementById("die" + index).src = "yahtzy/img/"+(value)+".png";
 };
 Visualiser.prototype.addReRollButton = function(){
     var rollButton = document.getElementById("rollButton");
@@ -102,7 +102,7 @@ Visualiser.prototype.changeBackToRollButton = function(){
     rollButton.innerHTML = "Roll Dice";
 }
 Visualiser.prototype.selectDieForReRoll = function(i, value){
-    document.getElementById("die" + i).src = "img/"+(value)+"sel.png";
+    document.getElementById("die" + i).src = "yahtzy/img/"+(value)+"sel.png";
 };
 Visualiser.prototype.updateScoresTop = function(totalScoreTop, bonus, totalScoreTopAfterBonus){
     document.getElementById("cellForTopRowScore").innerHTML = totalScoreTop;

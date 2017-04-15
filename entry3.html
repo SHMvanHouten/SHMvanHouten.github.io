@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+    Welcome back to week 2 of my journey through the wonderfully mind boggling world of Java.<br>
+    <br>
+    In our get together on week 2 we discussed a variety of topics. Our homework assignment made use of a few of these topics. Week 3 was basically a revision of our homework and therefore a reinforcement of the topic we discussed in week 2. This means that I can just concatenate the two weeks into one journal entry!<br>
+    <br>
+    The way I will be describing the topics we discussed will follow along with the structure of the lesson. The test case in the lesson was to create a list of persons and see what you can do with such a list and what methods come into play when creating and handling a list. The code for it can be found on: <a href="https://github.com/SHMvanHouten/javatraining">https://github.com/SHMvanHouten/javatraining</a> under lesson 2. The PersonTest pretty much follows along the structure of the lesson and therefore this journal entry.<br>
+    <br>
+    <h3>java.time</h3>
+    The persons we can put in the list can be made through the constructor Person. It has three identifiers: firstName, lastName and dateOfBirth.<br>
+    Let’s talk about dateOfBirth first. java.time.LocalDate. We had a small history lesson about using dates and times in Java. I am not going to repeat that lesson and just repeat the conclusion of the lesson, namely to use the java.time api for dates and time, and not the java.date which is obsolete. I think <a href="https://www.infoq.com/articles/java.time">this article</a> could be enlightening for anyone who has any interest in more information on the subject.<br>
+    Moving on, we will be using java.time.LocalDate.of which gives us a nice format to enter our dates into and java.time.month to be able to type in the month instead of a number so it looks a bit prettier.<br>
+    <br>
+    <h3>Override, equals and hashcode</h3>
+    So now we can make persons that have a first and last name and a date of birth. First we looked at how we could see if a person was already added to the list, this would require a method that see if one object equals another. Fortunately the parent class for our Person object; java.lang.Object has a method for us called equals. Unfortunately, this will not get us what we need.<br>
+    When we create a new person with the Person constructor, the java engine will give that person a spot on the heap where it can access it. Now if we create a person2 with the exact same attributes it will get a different spot on the heap. <br>
+    For our purposes, the first person should be exactly the same as the second person, because it is exactly the same in every attribute it has. However, the equal method does distinguish them to be different people, since they are in two different spots on the heap.<br>
+    That means we will need to <strong>Override</strong> the equals method in our Person object. We could just declare the equals method in our Person class and make it do what we want because when the method is invoked it will look in the child class Person before it looks in the parent class Object. This is called overriding.<br>
+    Before we do this we have to declare @Override. This serves two purposes. First, it makes it clear to other programmers (and our future selves) that we are overriding an existing method. Second, this will cause the compiler to check if we are indeed overriding a method, thus warning you if you have made a mistake and are in fact <em>not</em> overriding anything.<br>
+    <br>
+    Now that we have warned the compiler that we are overriding a parent method, we can think about how we want to make the equals method do what we want it to do. If you click <a href="https://github.com/SHMvanHouten/javatraining/blob/master/src/main/java/com/github/shmvanhouten/lesson2/Person.java">this link</a> you can see what we did on line 19.<br>
+    <pre>
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Person) {
+            Person other = (Person) obj;
+            if (this.firstName.equals(other.getFirstName())
+                    && this.lastName.equals(other.getLastName())
+                    && this.dateOfBirth.equals(other.getDateOfBirth())) {
+                return true;
+            }
+        }
+        return false;
+    }                    </pre>
+    What we basically do is we compare the object we are currently in, this, to another object we give as the argument. What we compare is the identifiers for both objects, so if all the identifiers are the same, the objects will be the same. Mission accomplished!<br>
+    <br>
+    But we’re not quite there yet. When we will be working with hash sets, which only accepts unique elements. The way it compares these elements however is it uses the hashcode for the object. Every object inherits a method that produces a hash code from java.lang.Object. The hash code will be unique to that object. This create the same problem we had with the equals method: it won’t recognize two objects that have exactly the same identifiers because they will still have different hash codes.<br>
+    Solution: we must override the hashcode!<br>
+    <pre>
+@Override
+public int hashCode() {
+   return this.firstName.charAt(0);
+}                    </pre>
+    So now all Persons with the same starting letter in their first name will have the same hashcode (their unichar code).<br>
+    Once the hash set has determined that two Person instances have the same hashcode, it will use the equals method to check if they are indeed the same, thus performing the check we need!<br>
+    Whenever you change the equals method you should probably change the hashCode method too.<br>
+    This all seems very complicated, but thankfully we have IntelliJ to do a lot of the work for us! We can use <em>alt insert</em> to create an override method for equals, and because equals and hashCode go together like a horse and carriage it will suggest equals() and hashCode() in one line!<br>
+    <br>
+    <h3>Overriding the toString</h3>
+    Great! We can now change the equals() and hashCode() methods. There is one more thing we need to do before we can go to our lists though. When we System.out.println our objects right now it will just print the name the object got in the heap.
+    This is not very useful for us so we will have to override the Person toString() method.<br>
+    So let’s use our newly acquired IntelliJ skills and use alt insert to create the toString override method.
+    This is what our IDE makes for us:<br>
+    <pre>
+@Override
+public String toString() {
+   return "Person{" +
+           "firstName='" + firstName + '\'' +
+           ", lastName='" + lastName + '\'' +
+           ", dateOfBirth=" + dateOfBirth +
+           '}';
+}</pre>
+    Now the toString() method will return a nice string with our objects and all it’s identifiers. Perfect!<br>
+    <br>
+
+    <h3>Lists, sets and maps</h3>
+    Now we can start making lists, sets and maps!<br>
+    First let’s look at the differences between the three.<br>
+    Lists and sets are both collections of elements, map collects key value pairs.<br>
+    <h4>Duplicates</h4>
+    List allows duplicate elements, as I mentioned earlier set does not. Map cannot contain duplicate keys, but values may be identical.<br>
+    <h4>Order</h4>
+    List will maintain the order in which the elements have been inserted. Set will not have a guaranteed order in which the elements are stored.<br>
+    <br>
+    <h3>Lists and sorting</h3>
+    So let’s look at lists first. Here’s the list we made in our lesson 2:<br>
+    <pre>
+Person marco = new Person("Marco", "Beelen", of(1977, JUNE, 27));
+Person casper = new Person("Casper", "Beelen", of(2015, APRIL, 17));
+Person sjoerd = new Person("Sjoerd", "Houten, van", of(1983, MARCH, 12));
+Person simone = new Person("Simone", "Kamer", of(1981, JULY, 1));
+
+List&ltPerson&gt persons = new ArrayList&lt&gt();
+
+persons.add(casper);
+persons.add(marco);
+persons.add(sjoerd);
+persons.add(simone);</pre><br>
+    So here we see something new: when making a list we have to declare what type of object we will be adding in the lists. In our case it’s instances of the Person constructor. So we type that inside the &lt &gt braces. We can then add our instanced Persons by using the .add() method.
+    <h4>sorting</h4>
+    So what if we want to sort our list? We can just use the java.Collections.sort() method.
+    <pre>
+Collections.sort(persons);</pre>
+    This gives us an error: no suitable method found for sort.<br>
+    The sort() method has no way to compare two person instances. We first need to give it a method to compare them. We can do this two different ways. Creating a comparator class which we can give as an extra argument to our sort() method, or giving the Person class its own compareTo() method.<br>
+    <h4>Comparator.compare() method</h4>
+    What does the comparator need to do? It has to compare one item in the list with another item. The sort() method can then use the comparator for each pair of elements in the list it needs to compare.<br>
+    The return type for the comparator will be an integer, if the int is negative, the first person will come before the second. If the return int is positive, the second will come  before the first. 0 will mean they are the same.<br>
+    <pre>
+import java.util.Comparator;
+
+public class PersonByLastNameComparator implements Comparator&ltPerson&gt {
+
+   @Override
+   public int compare(Person first, Person second) {
+       int byLastName = first.getLastName().compareTo(second.getLastName());
+       if (byLastName != 0) {
+           return byLastName;
+       }
+int byFirstName = first.getFirstName().compareTo(second.getFirstName());
+if(byFirstName != 0){
+   return byFirstName;
+}
+return first.getDateOfBirth().compareTo(second.getDateOfBirth());
+}</pre>
+    So the sort() method uses the compare() method with the two elements it wants to sort as arguments. First it uses the compareTo() method for the String we get from the getLastName() method of our Person objects. This integer will be the byLastName variable, if it is not zero, the value of byLastName will be our return value, if it is zero, we will do the same for the firstName of both our Persons etc.<br>
+    <br>
+    <h4>Overriding the CompareTo() method of Person</h4>
+    The other way to make the sort() method be able to sort our Person objects is to implement Comparator&ltPerson&gt directly on our Person class and overriding the compareTo function it’s now inherited from the Comparator. In our example we just want to sort on date of birth, so this is what we do:<br>
+    <pre>
+@Override
+public int compareTo(Person other) {
+   return this.dateOfBirth.compareTo(other.getDateOfBirth());
+}</pre>
+    <br>
+    <h3>Some final things about Sets</h3>
+    I already discussed that all of set’s elements must be unique. This is demonstrated in the PersonTest.java class where we try to add a mcbeelen instance of Person which has the same identifiers as marco. The mcbeelen class therefore doesn’t get added to the set. As we have seen a normal HashSet won’t have an order we can rely on but we can create a class that can be sorted: TreeSet.<br>
+    <br>
+    So that was the lesson of week 2. Quite a lot of information to take in, so week 3 was just revising our homework and expanding upon it. The homework assignment was to make a program where a store employee can register all products and their use by dates. That assignment can be found <a href="https://github.com/SHMvanHouten/javahomework/tree/master/StoreBalance">here</a>.<br>
+    The assignment for next week is to add a price to all the products and for a way to see the total worth of a product or even the whole stock.
+
+
+</body>
+</html>

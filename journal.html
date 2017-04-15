@@ -20,6 +20,32 @@
     </nav>
     <main>
         <section>
+            <h2 onclick="getClient()">Learning Java, week 2</h2>
+            <script>
+                var client = new HttpClient();
+                function getClient(){
+                    client.get('/entry3.html', function(response){
+                        entry = document.getElementById("entry3");
+                        entry.innerHTML = response;
+                    })
+                }
+                function HttpClient() {
+                    this.get = function(aUrl, aCallback) {
+                        var anHttpRequest = new XMLHttpRequest();
+                        anHttpRequest.onreadystatechange = function() {
+                            if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+                                aCallback(anHttpRequest.responseText);
+                        }
+
+                        anHttpRequest.open( "GET", aUrl, true );
+                        anHttpRequest.send( null );
+                    }
+                }
+            </script>
+            <article id="entry3">
+            </article>
+        </section>
+        <section>
             <h2>Learning Java, week 2</h2>
             <article>
                     Welcome back to week 2 of my journey through the wonderfully mind boggling world of Java.<br>

@@ -6,40 +6,28 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/sjoerd.css" type="text/css"/>
     <script src ="journalBuilder.js"></script>
+    <script>
+        var listOfJournalEntries = [
+            "Learning Java, week 1",
+            "Learning Java, week 2 and 3",
+            "Learning Java, week 4"
+        ]
+    </script>
 </head>
-<body>
-    <header class="banner">
-        <h1>Journal</h1>
-        <p>My Progress in Programming</p>
-    </header>
-    <nav>
-        <ul>
-            <li class="topbar"><a class=mainlinks href="index.html">home</a></li>
-            <li class="topbar"><a class=mainlinks href="journal.html">journal</a></li>
-            <li class="topbar"><a class=mainlinks href="yahtzy/yahtzy.html">yahtzee</a></li>
-        </ul>
-    </nav>
-    <main>
-        <section>
-            <h2 onclick="getEntry('entry3')">Learning Java, week 4</h2>
-            <article id="entry3">
+<body  onload="build = new JournalBuilder(listOfJournalEntries)">
+<header class="banner">
+    <h1>Journal</h1>
+    <p>My Progress in Programming</p>
+</header>
+<nav>
+    <ul>
+        <li class="topbar"><a class=mainlinks href="index.html">home</a></li>
+        <li class="topbar"><a class=mainlinks href="journal.html">journal</a></li>
+        <li class="topbar"><a class=mainlinks href="yahtzy.html">yahtzee</a></li>
+    </ul>
+</nav>
+<main>
 
-            </article>
-        </section>
-        <section>
-            <h2 onclick="getEntry('entry2')">Learning Java, week 2 and 3</h2>
-            <article id="entry2">
-
-            </article>
-        </section>
-        <section>
-            <h2 onclick="getEntry('entry1')">Learning Java, week 1</h2>
-            <article id="entry1">
-
-            </article>
-        </section>
-
-
-    </main>
+</main>
 </body>
 </html>

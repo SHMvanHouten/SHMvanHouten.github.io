@@ -9,14 +9,19 @@
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <script src ="journalBuilder.js"></script>
     <script>
-        var listOfJournalEntries = [
-            "Learning Java, week 1",
-            "Learning Java, week 2 and 3",
-            "Learning Java, week 4"
-        ]
+        const listOfJournalEntries = {
+            "wk4": "Learning Java, week 4",
+            "wk2": "Learning Java, week 2 and 3",
+            "wk1": "Learning Java, week 1"
+        };
+//        const listOfJournalEntries = [
+//            const wk1 = new JournalEntry("Learning Java, week 1", "journalEntries/wk1"),
+//            const wk2 = new JournalEntry("Learning Java, week 2 and 3", "journalEntries/wk2.html"),
+//            {"Learning Java, week 4": "journalEntries/wk4.html"}
+//        ]
     </script>
 </head>
-<body  onload="build = new JournalBuilder(listOfJournalEntries)">
+<body  onload="new JournalBuilder(listOfJournalEntries)">
 <header class="banner">
     <h1>Journal</h1>
     <p>My Progress in Programming</p>

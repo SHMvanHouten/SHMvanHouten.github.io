@@ -33,13 +33,13 @@ function JournalBuilder(listOfJournalEntries){
 
     let populateTheJournal = function(){
         let main = document.getElementsByTagName("main")[0];
-        Object.keys(listOfJournalEntries).forEach(function(key){
+        Object.keys(listOfJournalEntries).forEach(function(entryName){
             let section = document.createElement("section");
             let h2 = document.createElement("h2");
-            h2.innerHTML = listOfJournalEntries[key];
+            h2.innerHTML = listOfJournalEntries[entryName];
             let article = document.createElement("article");
-            article.id = key;
-            let getEntry = new EntryGetter(key);
+            article.id = entryName;
+            let getEntry = new EntryGetter(entryName);
             h2.addEventListener("click",getEntry.getArticle);
             section.appendChild(h2);
             section.appendChild(article);

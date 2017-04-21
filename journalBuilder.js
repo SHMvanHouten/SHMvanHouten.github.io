@@ -2,16 +2,25 @@ function EntryGetter(entryName){
     const client = new HttpClient();
     let hasArticleBeenOpened = false;
 
+    function closeTheArticle() {
+        document.getElementById(entryName).innerHTML = "";
+        hasArticleBeenOpened = false;
+    }
+
+    function openTheArticle() {
+        client.get('/JournalEntries/' + entryName + ".html", function (response) {
+            let entry = document.getElementById(entryName);
+            entry.innerHTML = response;
+        });
+        hasArticleBeenOpened = true;
+    }
+
     this.getArticle = function(){
+
         if(hasArticleBeenOpened){
-            document.getElementById(entryName).innerHTML = "";
-            hasArticleBeenOpened = false;
+            closeTheArticle();
         }else{
-            client.get('/JournalEntries/' + entryName + ".html", function(response){
-                let entry = document.getElementById(entryName);
-                entry.innerHTML = response;
-            });
-            hasArticleBeenOpened = true;
+            openTheArticle();
         }
     }
 }
@@ -35,35 +44,19 @@ function JournalBuilder(listOfJournalEntries){
         let main = document.getElementsByTagName("main")[0];
         Object.keys(listOfJournalEntries).forEach(function(entryName){
             let section = document.createElement("section");
+
             let h2 = document.createElement("h2");
             h2.innerHTML = listOfJournalEntries[entryName];
-            let article = document.createElement("article");
-            article.id = entryName;
             let getEntry = new EntryGetter(entryName);
             h2.addEventListener("click",getEntry.getArticle);
+
+            let article = document.createElement("article");
+            article.id = entryName;
+
             section.appendChild(h2);
             section.appendChild(article);
             main.appendChild(section)
         });
-
-
-        // for(let i=listOfJournalEntries.length -1; i>=0; i--){
-        //     let section = document.createElement("section");
-        //     let h2 = document.createElement("h2");
-        //     h2.innerHTML = listOfJournalEntries[i];
-        //     let getEntry = new EntryGetter(i+1);
-        //     h2.addEventListener("click",getEntry.getArticle);
-        //     section.appendChild(h2);
-        //     let article = document.createElement("article");
-        //     article.id = "entry" + (i + 1);
-        //     section.appendChild(article);
-        //     main.appendChild(section)
-        // }
     };
     populateTheJournal();
-}
-
-function JournalEntry(name, url){
-    this.name = name;
-    this.url = url;
 }

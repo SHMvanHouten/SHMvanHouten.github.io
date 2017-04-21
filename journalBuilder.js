@@ -29,7 +29,7 @@ function HttpClient() {
     this.get = function(aUrl, aCallback) {
         let anHttpRequest = new XMLHttpRequest();
         anHttpRequest.onreadystatechange = function() {
-            if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+            if (anHttpRequest.readyState === 4 && anHttpRequest.status === 200)
                 aCallback(anHttpRequest.responseText);
         };
 
@@ -42,6 +42,7 @@ function JournalBuilder(listOfJournalEntries){
 
     let populateTheJournal = function(){
         let main = document.getElementsByTagName("main")[0];
+
         Object.keys(listOfJournalEntries).forEach(function(entryName){
             let section = document.createElement("section");
 

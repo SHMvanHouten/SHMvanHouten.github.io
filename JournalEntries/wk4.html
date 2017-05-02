@@ -6,6 +6,21 @@
 <body>
 
 Welcome back to week 4 of learning java!<br>
-
+<br>
+Welcome back to week 4 of learning java!<br>
+This week we looked at exceptions. Exceptions are thrown when the normal flow of your program is interrupted. We can take an example from last week's homework assignment. The code can be found in https://github.com/SHMvanHouten/javahomework/tree/master/StoreBalance.<br>
+In this assignment we built a store inventory system where a user can keep track of the inventory of the store.<br>
+Let’s have a look at the method for the StoreInventory class where we can either increase the quantity of a product in our inventory or start a new entry in the form of a new InventoryItem:
+<pre>
+public void addInventoryItem (String name, LocalDate expiryDate, Integer quantity){
+	Product product = new Product(name, expiryDate);
+	if(inventoryList.containsKey(product)){
+		inventoryList.get(product).addToQuantity(quantity);
+	}else{
+InventoryItem inventoryItem = new InventoryItem(product, quantity);
+inventoryList.put(product, inventoryItem);
+}
+</pre>
+So every Inventory item contains a Product and its quantity. A product also has an expiry date. So what happens if we want to add a product that is past it’s expiry date? Nothing!
 </body>
 </html>

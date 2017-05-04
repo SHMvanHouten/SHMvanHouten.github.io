@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
 </head>
 <body>
-
 Welcome back to week 4 of learning java!<br>
-<br>
-Welcome back to week 4 of learning java!<br>
-This week we looked at exceptions. Exceptions are thrown when the normal flow of your program is interrupted. We can take an example from last week's homework assignment. The code can be found in https://github.com/SHMvanHouten/javahomework/tree/master/StoreBalance.<br>
+This week we looked at exceptions. Exceptions are thrown when the normal flow of your program is interrupted. We can take an example from last week's homework assignment. The code can be found in <a href="https://github.com/SHMvanHouten/javahomework/tree/master/StoreBalance">StoreBalance</a> and its test: <a href="https://github.com/SHMvanHouten/javahomework/blob/master/StoreBalance/src/test/java/com/github/shmvanhouten/StoreBalance/StoreInventoryTest.java">https://github.com/SHMvanHouten/javahomework/blob/master/StoreBalance/src/test/java/com/github/shmvanhouten/StoreBalance/StoreInventoryTest.java</a><br>
 In this assignment we built a store inventory system where a user can keep track of the inventory of the store.<br>
-Let’s have a look at the method for the StoreInventory class where we can either increase the quantity of a product in our inventory or start a new entry in the form of a new InventoryItem:
-<pre>
+<br>
+<h3>Throwing and catching exceptions</h3>
+	Let’s have a look at the method for the StoreInventory class where we can either increase the quantity of a product in our inventory or start a new entry in the form of a new InventoryItem:<br>
+	<pre>
 public void addInventoryItem (String name, LocalDate expiryDate, Integer quantity){
 	Product product = new Product(name, expiryDate);
 	if(inventoryList.containsKey(product)){
@@ -21,6 +20,81 @@ InventoryItem inventoryItem = new InventoryItem(product, quantity);
 inventoryList.put(product, inventoryItem);
 }
 </pre>
-So every Inventory item contains a Product and its quantity. A product also has an expiry date. So what happens if we want to add a product that is past it’s expiry date? Nothing!
+	So every Inventory item contains a Product and its quantity. A product also has an expiry date. Right now when you add an item that is past an expiry date the system will just accept it. We want to change that. This is where exceptions come in.<br>
+	Exceptions are <em>classes</em> you can <em>throw</em> if something interrupts the normal flow of a program. In our example, where adding an item with a passed expiryDate should interrupt our program, we could write something like this:<br>
+	<pre>
+public void addInventoryItem (String name, LocalDate expiryDate, Integer quantity){
+if(expiryDate.isAfter(now)){
+	throw new IllegalArgumentException();
+}
+//rest of code;
+}
+</pre>
+	If a method <em>throws</em> an exception, we need to <em>catch</em> it somewhere. (Because this is an unchecked exception we don’t actually <em>have</em> to handle it but we will get into this later). We can either catch the exception in this method or in a method higher up in our call stack. In our example we want to catch it in our test.<br>
+	The first thing we need to do is throw our exception to the method that called addInventoryItem, our test.<br>
+	<pre>
+public void addInventoryItem (String name, LocalDate expiryDate, Integer quantity) throws IllegalArgumentException{
+…
+}
+</pre>
+	That is how you throw an exception.
+	Now we need to catch it. We can do this with a try-catch block in our test method:<br>
+	<pre>
+private void attemptToAddItemToInventory(StoreInventory inventory, String product, LocalDate expiryDate, int quantity) {
+   try {
+       addItemToInventory(inventory, product, expiryDate, quantity);
+   } catch (IllegalArgumentException e) {
+       System.out.println("Expired Product found");
+   }
+}
+</pre>
+	In our try block we try to run our method. If it doesn’t throw an exception, we never get to the catch block and our program just resumes with it’s regular code. If an exception is thrown by the addItemToInventory because we entered a wrong expiryDate the catch block will catch it (so it doesn’t go up higher i the stack) and run the code in its block. In our case it logs in the console that we tried to enter an expired product.<br>
+	There is a better way to test if a method accurately throws an exception: StoreInventoryTest line 28.<br>
+	<pre>
+@Test(expected = IllegalArgumentException.class)
+</pre>
+	<br>
+	<h3>Preconditions and defensive programming</h3>
+	We can use google.guava preconditions to make the exception throwing a bit more elegant. As an example: we can also add a checkNotNull precondition to protect us from a user entering a null for the product name.<br>
+	<pre>
+checkArgument(expiryDate.isAfter(now()), "Expiration date has passed");
+checkNotNull(name);
+</pre>
+	The arguments for checkArgument are a boolean, and optionally an error message. The com.google.common.base.Preconditions.checkArgument then throws an IllegalArgumentException if our boolean argument is false.<br>
+	This is part of defensive programming: making our code behave in a predictable manner despite of incorrect input or user action.<br>
+	<br>
+	<h3>Checked, unchecked exceptions and errors</h3>
+	I said earlier that IllegalArgumentException is an unchecked exception. What does this mean?
+	All Exceptions inherit from the class Throwable. Throwable divides up into Exceptions and Errors, Exceptions divide up into checked and unchecked exceptions.<br>
+“An Error is a subclass of Throwable that indicates serious problems that a reasonable application should not try to catch. Most such errors are abnormal conditions.” Source: <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Error.html">https://docs.oracle.com/javase/7/docs/api/java/lang/Error.html.</a><br>
+	Checked exceptions are exceptions that can be found by the compiler. Therefore you will always need to handle them before you program will compile by either catching them or throwing them to have a method higher up in the stack handle it.<br>
+	Unchecked exceptions are RunTimeExceptions. They are exceptions that can not be found by the compiler and therefore caused by programmer error. They will often be caused by irregular user input and a defensive style of programming would require a programmer to predict the possibility of irregular user input and have systems in place to handle that.<br>
+	<br>
+	<h3>Stack trace</h3>
+	When an unhandled exception is encountered by your program, it will terminate the program and return you a stack trace. In this stack trace you can find the entire stack of methods called down from where the exception was encountered up to the main method. This is very useful for debugging.<br>
+	<br>
+	<h3>Java assert</h3>
+	We had a look at asserts and the existence of them in the Java language. We saw that you need to check -ea and thereby enable asserts in order for them to activate.<br>
+	Assert will handle this:
+	<pre>
+assert cond;
+</pre>
+	like this:
+	<pre>
+if (!cond){
+ throw new AssertionError();
+}
+</pre>
+	With Junit tests and the existence of guava preconditions and the likes we don’t really use java asserts.<br>
+	<br>
+	<h3>Some final things I learned</h3>
+	One other thing we came upon that didn’t really fit into the theme of this entry was method overloading. This is a very useful feature that allows you to let your method accept different types of arguments. Take for example the BigDecimal constructor method, it can accept Strings, ints, longs etc. This is because the BigDecimal constructor method has been declared with every one of those types of parameters separately.<br>
+	<br>
+	We also learned some very useful Intellij shortcuts:<br>
+	<em>ctrl alt v/m/p</em> to make a selected section into either a variable, method or parameter.<br>
+	<em>ctrl click</em> to immediately see the method origin or the usages of the method if you click on the original.<br>
+	<br>
+	That’s it for this week, next week we will be looking at I/O!
+
 </body>
 </html>

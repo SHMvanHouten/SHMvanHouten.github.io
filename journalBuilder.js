@@ -66,6 +66,5 @@ function JournalBuilder(listOfJournalEntries){
 function getToTryCatchChapter(){
     var wk4Title = document.getElementById("wk4Title");
     wk4Title.click();
-    var linkToTryCatchExplanationInWk4 = document.getElementById(”linkToTryCatchExplanationInWk4”);
-    linkToTryCatchExplanationInWk4.scrollIntoView();
+    wk4Title.scrollIntoView();
 }

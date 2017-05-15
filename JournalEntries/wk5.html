@@ -2,17 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-</head>
-<body>
-    Welcome back to learning java week 5!
     <script>
-        function monkey(){
-            var wk4Title = getElementById("wk4Title");
-            for(var i=0; i<50; i++){
-                wk4Title.click();
-            }
+        function getToTryCatchChapter(){
+            var wk4Title = document.getElementById("wk4Title");
+            wk4Title.click();
+            var linkToTryCatchExplanationInWk4 = document.getElementById(”linkToTryCatchExplanationInWk4”);
+            linkToTryCatchExplanationInWk4.scrollIntoView();
         }
     </script>
-    <a id="monkey" onclick="monkey()">click me</a>
+</head>
+<body>
+Learning Java, Week 5.
+
+Welcome back to learning Java!
+This week we discussed input/output streams. The code for this weeks lesson can be found in <a href=”https://github.com/SHMvanHouten/javatraining/blob/master/src/main/java/com/github/shmvanhouten/lesson5/HelloWorld.java”>here</a><br>
+We learned how to write to a file. <br>
+What we could use is just the most basic FileOutputStream. This will copy our data one byte at a time if implemented <a href=”https://docs.oracle.com/javase/tutorial/essential/io/bytestreams.html”> this way</a><br>
+<pre>
+</pre>
+As you can see we had to wrap the fos.write in a <a href="" onclick="getToTryCatchChapter()">try catch</a>
+because the write method throws an IOException which is a checked exception.
 </body>
 </html>

@@ -1,2 +1,2 @@
 # SHMvanHouten.github.io
-echo "Hello world" > index.html
+Personal Github page of Sjoerd van Houten

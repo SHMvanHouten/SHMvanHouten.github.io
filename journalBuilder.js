@@ -48,6 +48,7 @@ function JournalBuilder(listOfJournalEntries){
 
             let h2 = document.createElement("h2");
             h2.innerHTML = listOfJournalEntries[entryName];
+            h2.id = entryName + "Title";
             let getEntry = new EntryGetter(entryName);
             h2.addEventListener("click",getEntry.getArticle);
 

@@ -33,7 +33,7 @@ private static void writeAFile() throws IOException{
 }
 </pre>
 Because the FileOutputStream only accepts single bytes as input we have to give it the String “Hello World!\n” in byte format by using the getBytes() method from the String API.
-As you can see we had make the writeAFile() method <a id=”linkToTryCatchExplanationInWk4”>throw an IO exception</a> because the close method throws an IO exception which is of course a checked exception.<br>
+As you can see we had make the writeAFile() method <a id=”linkToChapter4” onclick="goToChapter4()">throw an IO exception</a> because the close method throws an IO exception which is of course a checked exception.<br>
 <br>
 <h3>try-with-resources</h3>
 The first thing we can do is get rid of that finally block. It is necessary to close the File Output Stream because it could cause resource leaks but we can do it more neatly by using a try-with-resources block.<br>

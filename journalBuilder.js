@@ -63,7 +63,7 @@ function JournalBuilder(listOfJournalEntries){
     populateTheJournal();
 }
 
-function getToTryCatchChapter(){
+function goToChapter4(){
     var wk4Title = document.getElementById("wk4Title");
     wk4Title.click();
     wk4Title.scrollIntoView();

@@ -7,7 +7,8 @@
 <body>
 Welcome back to learning Java!
 This week we discussed input/output streams. The code for this weeks lesson can be found in
-<a href="https://github.com/SHMvanHouten/javatraining/blob/master/src/main/java/com/github/shmvanhouten/lesson5/HelloWorld.java/" target="_blank">here</a><br>
+<a href="https://github.com/SHMvanHouten/javatraining/blob/master/src/main/java/com/github/shmvanhouten/lesson5/HelloWorld.java/" target="_blank">here</a>
+A great resource I used as well to write this entry is the <a href="https://docs.oracle.com/javase/tutorial/essential/io/index.html" target="_blank">Java Tutorials page on basic I/O</a><br>
 <br>
 <h3> The File class and File Output Stream</h3>
 The first thing we take a look at is writing a file.<br>
@@ -49,6 +50,83 @@ private static void writeAFile(){
 }
 </pre>
 the resource you put in the parentheses after try will be closed automatically when the try block has been finished.<br>
-Now we can also catch the IOException from the .close() method too so we don’t have to throw it anymore.
+Now we can also catch the IOException from the .close() method too so we don’t have to throw it anymore.<br>
+<br>
+<h3>Character Stream IO: PrintWriter</h3>
+Byte streams are really low lvl I/O that won't be very efficient to use. For our purposes we need to use a character stream. All character streams descend from reader and writer. PrintWriter is also useful because it can use the println method. Let's add it to see it in action:<br>
+<pre>
+private static void writeAFile() {
+   File file = new File("C:\\Users\\Sjoerd","sjoerd.txt");
+   try (FileOutputStream fos = new FileOutputStream(file); PrintWriter pw = new PrintWriter(fos)){
+       file.createNewFile();
+       fos.write("Hello World!\n".getBytes());
+       pw.println("why doesn't world say anything back?" + System.currentTimeMillis());
+   } catch (IOException e) {
+       e.printStackTrace();
+   }
+}
+</pre>
+You can use the FileOutPutStream as an argument for the Printwriter constructor or you can use the File. Now let's have a look at Input Streams.<br>
+<br>
+<h3>Input Streams and Buffered Streams</h3>
+The output equivalent of the basic output stream is FileInputStream.<br>
+<pre>
+private static String[] readAFile2() {
+   File file = new File("C:\\Users\\Sjoerd","sjoerd.txt");
+   try(FileInputStream fis = new FileInputStream(file)) {
+       int read = fis.read();
+       System.out.println(read);
+   } catch (IOException e) {
+       e.printStackTrace();
+   }
+   return null;
+}
+// the output is 72.
+</pre>
+Because FileInputStream is a byte-stream it gives 8 bit values, in this case 72. This represents the capital letter H on the ASCII table. Not very efficient so let's use something more sophisticated.
+<pre>
+private static String[] readAFile() {
+   File file = new File("C:\\Users\\Sjoerd","sjoerd.txt");
+   try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
+       String readLine = reader.readLine();
+
+       while(readLine != null){
+           System.out.println(readLine);
+           readLine = reader.readLine();
+       }
+
+   } catch (IOException e) {
+       e.printStackTrace();
+   }
+   return null;
+}
+</pre>
+Here we see the <a href="https://docs.oracle.com/javase/tutorial/essential/io/buffers.html" target="_blank">BufferedReader</a> which adds efficiency.<br>
+System.out is also a stream which doesn't need to be opened and is defined automatically, same as System.err and System.in.<br>
+<br>
+<h3>Terminal Input </h3>
+Because System.in is already defined we can use it to read our input we give in the console:
+<pre>
+private static void readFromTerminalInput() {
+   InputStream in = System.in;
+   InputStreamReader isr = new InputStreamReader(in);
+   try(BufferedReader reader = new BufferedReader(isr)){
+       String readLine = reader.readLine();
+       while(readLine != null){
+           System.out.println(readLine);
+           readLine = reader.readLine();
+       }
+   } catch (IOException e) {
+       e.printStackTrace();
+   }
+}
+</pre>
+I made a little number guessing game to mess around with what we learned this week. It ca be found <a href="https://github.com/SHMvanHouten/javatraining/blob/master/src/main/java/com/github/shmvanhouten/lesson5/NumberGame.java" target="_blank">here</a> with the <a href="https://github.com/SHMvanHouten/javatraining/blob/master/src/test/java/com/github/shmvanhouten/lesson5/NumberGameTest.java" target="_blank">test here</a><br>
+<h3>Intellij IDEA stuff</h3>
+We had a look at the features intellij has for our tests. We had a look at running test with coverage. When you run a test with coverage you can see how much of your classes are covered by your tests. A very useful feature.<br>
+Another thing we looked at again was using the debug feature, where you can set a breakpoint in your code and hop through the running of the code line by line to see exactly how your code runs.<br>
+We also learned the hotkey ctrl alt l, to reformat your code to be lined out and tabbed in properly.<br>
+<br>
+That is what we looked at this week. Our next lesson will handle Databases.
 </body>
 </html>

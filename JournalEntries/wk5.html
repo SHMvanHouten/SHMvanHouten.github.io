@@ -7,7 +7,7 @@
 <body>
 Welcome back to learning Java!
 This week we discussed input/output streams. The code for this weeks lesson can be found in
-<a href=”https://github.com/SHMvanHouten/javatraining/blob/master/src/main/java/com/github/shmvanhouten/lesson5/HelloWorld.java” target="_blank">here</a><br>
+<a href="https://github.com/SHMvanHouten/javatraining/blob/master/src/main/java/com/github/shmvanhouten/lesson5/HelloWorld.java/" target="_blank">here</a><br>
 <br>
 <h3> The File class and File Output Stream</h3>
 The first thing we take a look at is writing a file.<br>
@@ -16,7 +16,7 @@ First we have to give a path to the file. What we use for that is the File class
 File file = new File("C:\\Users\\Sjoerd","sjoerd.txt")
 </pre>
 What we could use is just the most basic FileOutputStream. This will copy our data one byte at a time if implemented
-<a href=”https://docs.oracle.com/javase/tutorial/essential/io/bytestreams.html” target="_blank"> this way</a><br>
+<a href="https://docs.oracle.com/javase/tutorial/essential/io/bytestreams.html" target="_blank"> this way</a><br>
 <pre>
 private static void writeAFile() throws IOException{
    File file = new File("/home/sjoerd/Documents","sjoerd.txt");
@@ -32,8 +32,8 @@ private static void writeAFile() throws IOException{
    }
 }
 </pre>
-Because the FileOutputStream only accepts single bytes as input we have to give it the String “Hello World!\n” in byte format by using the getBytes() method from the String API.
-As you can see we had make the writeAFile() method <a id=”linkToChapter4” onclick="goToChapter4()">throw an IO exception</a> because the close method throws an IO exception which is of course a checked exception.<br>
+Because the FileOutputStream only accepts single bytes as input we have to give it the String “Hello World!\n" in byte format by using the getBytes() method from the String API.
+As you can see we had make the writeAFile() method <a id="linkToChapter4" onclick="goToChapter4()">throw an IO exception</a> because the close method throws an IO exception which is of course a checked exception.<br>
 <br>
 <h3>try-with-resources</h3>
 The first thing we can do is get rid of that finally block. It is necessary to close the File Output Stream because it could cause resource leaks but we can do it more neatly by using a try-with-resources block.<br>

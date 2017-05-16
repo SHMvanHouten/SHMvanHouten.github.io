@@ -15,20 +15,20 @@ In this assignment we built a store inventory system where a user can keep track
 	Let’s have a look at the method for the StoreInventory class where we can either increase the quantity of a product in our inventory or start a new entry in the form of a new InventoryItem:<br>
 	<pre>
 public void addInventoryItem (String name, LocalDate expiryDate, Integer quantity){
-	Product product = new Product(name, expiryDate);
-	if(inventoryList.containsKey(product)){
-		inventoryList.get(product).addToQuantity(quantity);
-	}else{
+    Product product = new Product(name, expiryDate);
+    if(inventoryList.containsKey(product)){
+        inventoryList.get(product).addToQuantity(quantity);
+    }else{
 InventoryItem inventoryItem = new InventoryItem(product, quantity);
 inventoryList.put(product, inventoryItem);
 }
 </pre>
-	So every Inventory item contains a Product and its quantity. A product also has an expiry date. Right now when you add an item that is past an expiry date the system will just accept it. We want to change that. This is where exceptions come in.<br>
-	Exceptions are <em>classes</em> you can <em>throw</em> if something interrupts the normal flow of a program. In our example, where adding an item with a passed expiryDate should interrupt our program, we could write something like this:<br>
-	<pre>
+    So every Inventory item contains a Product and its quantity. A product also has an expiry date. Right now when you add an item that is past an expiry date the system will just accept it. We want to change that. This is where exceptions come in.<br>
+    Exceptions are <em>classes</em> you can <em>throw</em> if something interrupts the normal flow of a program. In our example, where adding an item with a passed expiryDate should interrupt our program, we could write something like this:<br>
+    <pre>
 public void addInventoryItem (String name, LocalDate expiryDate, Integer quantity){
 if(expiryDate.isAfter(now)){
-	throw new IllegalArgumentException();
+    throw new IllegalArgumentException();
 }
 //rest of code;
 }
@@ -37,7 +37,7 @@ if(expiryDate.isAfter(now)){
 	The first thing we need to do is throw our exception to the method that called addInventoryItem, our test.<br>
 	<pre>
 public void addInventoryItem (String name, LocalDate expiryDate, Integer quantity) throws IllegalArgumentException{
-…
+    …
 }
 </pre>
 	That is how you throw an exception.

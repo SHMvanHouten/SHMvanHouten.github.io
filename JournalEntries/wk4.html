@@ -5,10 +5,13 @@
 </head>
 <body>
 Welcome back to week 4 of learning java!<br>
-This week we looked at exceptions. Exceptions are thrown when the normal flow of your program is interrupted. We can take an example from last week's homework assignment. The code can be found in <a href="https://github.com/SHMvanHouten/javahomework/tree/master/StoreBalance">StoreBalance</a> and its test: <a href="https://github.com/SHMvanHouten/javahomework/blob/master/StoreBalance/src/test/java/com/github/shmvanhouten/StoreBalance/StoreInventoryTest.java">https://github.com/SHMvanHouten/javahomework/blob/master/StoreBalance/src/test/java/com/github/shmvanhouten/StoreBalance/StoreInventoryTest.java</a><br>
+This week we looked at exceptions. Exceptions are thrown when the normal flow of your program is interrupted.
+We can take an example from last week's homework assignment. The code can be found in
+<a href="https://github.com/SHMvanHouten/javahomework/tree/master/StoreBalance" target="_blank">StoreBalance</a> and its test:
+<a href="https://github.com/SHMvanHouten/javahomework/blob/master/StoreBalance/src/test/java/com/github/shmvanhouten/StoreBalance/StoreInventoryTest.java" target="_blank">https://github.com/SHMvanHouten/javahomework/blob/master/StoreBalance/src/test/java/com/github/shmvanhouten/StoreBalance/StoreInventoryTest.java</a><br>
 In this assignment we built a store inventory system where a user can keep track of the inventory of the store.<br>
 <br>
-<h3 id=”linkToTryCatchExplanationInWk4”>Throwing and catching exceptions</h3>
+<h3>Throwing and catching exceptions</h3>
 	Let’s have a look at the method for the StoreInventory class where we can either increase the quantity of a product in our inventory or start a new entry in the form of a new InventoryItem:<br>
 	<pre>
 public void addInventoryItem (String name, LocalDate expiryDate, Integer quantity){
@@ -66,7 +69,7 @@ checkNotNull(name);
 	<h3>Checked, unchecked exceptions and errors</h3>
 	I said earlier that IllegalArgumentException is an unchecked exception. What does this mean?
 	All Exceptions inherit from the class Throwable. Throwable divides up into Exceptions and Errors, Exceptions divide up into checked and unchecked exceptions.<br>
-“An Error is a subclass of Throwable that indicates serious problems that a reasonable application should not try to catch. Most such errors are abnormal conditions.” Source: <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Error.html">https://docs.oracle.com/javase/7/docs/api/java/lang/Error.html.</a><br>
+“An Error is a subclass of Throwable that indicates serious problems that a reasonable application should not try to catch. Most such errors are abnormal conditions.” Source: <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/Error.html" target="_blank">https://docs.oracle.com/javase/7/docs/api/java/lang/Error.html.</a><br>
 	Checked exceptions are exceptions that can be found by the compiler. Therefore you will always need to handle them before you program will compile by either catching them or throwing them to have a method higher up in the stack handle it.<br>
 	Unchecked exceptions are RunTimeExceptions. They are exceptions that can not be found by the compiler and therefore caused by programmer error. They will often be caused by irregular user input and a defensive style of programming would require a programmer to predict the possibility of irregular user input and have systems in place to handle that.<br>
 	<br>

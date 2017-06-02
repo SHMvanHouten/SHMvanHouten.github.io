@@ -51,10 +51,12 @@ ORDER BY COUNT(Track.TrackId)DESC) y;
 Done!<br>
 exercise 2: Artist with the most music measured by MilliSeconds<br>
 <pre>
-SELECT Artist.Name, SUM(Track.Milliseconds)
+SELECT MillisecondsList.ArtistName, MAX(MillisecondsList.milliSum)
+FROM(
+SELECT Artist.Name AS ArtistName, SUM(Track.Milliseconds) AS milliSum
 FROM Artist
 JOIN Album ON Artist.ArtistId = Album.ArtistId
 JOIN Track ON Album.AlbumId = Track.AlbumId
 GROUP BY Artist.Name
-ORDER BY SUM(Track.Milliseconds) DESC;
+ORDER BY SUM(Track.Milliseconds) DESC) MillisecondsList;
 </pre>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercises week 6</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/sjoerd.css" type="text/css"/>
+    <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header class="banner">
+        <h1>Exercises week 6</h1>
+        <p>Solutions</p>
+    </header>
+    <nav>
+        <ul>
+            <li class="topbar"><a class=mainlinks href="../index.html">home</a></li>
+            <li class="topbar"><a class=mainlinks href="../journal.html">journal</a></li>
+            <li class="topbar"><a class=mainlinks href="../yahtzy.html">yahtzee</a></li>
+        </ul>
+    </nav>
+    <main>
+    <p>
+    <h3>exercise 1: Artist with the most songs (on name of the artist)</h3>
+    <br>
+    To connect tracks to artist you need to go through album, so to make a simple first step let's try to get a list of amounts of albums each artist has listed. First Step:
+    <pre>
+SELECT Name, COUNT(Album.AlbumId)
+FROM Album
+JOIN Artist ON Album.ArtistId = Artist.ArtistId
+GROUP BY Artist.Name;
+</pre>
+    This works. Now we can try to list all the tracks one artist has made, meaning we have to join the track table to the album table. We'll do just for Pink Floyd since only Dark Side of the Moon is listed on there which will make our list shorter.
+    <pre>
+SELECT Album.Title, Track.Name
+FROM Album
+JOIN Artist ON Album.ArtistId = Artist.ArtistId
+JOIN Track ON Album.AlbumId = Track.AlbumId
+Where Artist.name = 'Pink Floyd'
+</pre>
+    And we get a nice list of the 9 tracks on dark side of the moon.<br>
+    Now we are ready to get to answering our question:
+    <pre>
+SELECT Artist.Name, COUNT(Track.TrackId) myCount
+FROM Artist
+JOIN Album ON Album.ArtistID = Artist.ArtistId
+JOIN Track ON Album.AlbumId = Track.AlbumId
+ORDER BY COUNT(Track.TrackId)DESC;
+</pre>
+    This doesn't quite work: the result we get is:
+    <pre>
+AC/DC		3504
+</pre>
+    It counted all the tracks in the track table and just added that to the first band in the Artist table. What we need here is the GROUP BY command, allowing us to count the amount of tracks for each artist individually:
+    <pre>
+SELECT Artist.Name, COUNT(Track.TrackId) myCount
+FROM Artist
+JOIN Album ON Album.ArtistID = Artist.ArtistId
+JOIN Track ON Album.AlbumId = Track.AlbumId
+GROUP BY Artist.Name
+ORDER BY COUNT(Track.TrackId)DESC;
+</pre>
+    This already gives our answer at the top of the table, but if we want to get just the "number one" artist from our query we can use this:
+    <pre>
+SELECT y.ArtistName, MAX(y.trackCount)
+FROM(
+SELECT Artist.Name AS ArtistName, COUNT(Track.TrackId) AS trackCount
+FROM Artist
+JOIN Album ON Album.ArtistID = Artist.ArtistId
+JOIN Track ON Album.AlbumId = Track.AlbumId
+GROUP BY Artist.Name
+ORDER BY COUNT(Track.TrackId)DESC) y;
+</pre>
+    Done!<br>
+    <h3>Exercise 2: Artist with the most music measured by MilliSeconds</h3>
+    <pre>
+SELECT MillisecondsList.ArtistName, MAX(MillisecondsList.milliSum)
+FROM(
+SELECT Artist.Name AS ArtistName, SUM(Track.Milliseconds) AS milliSum
+FROM Artist
+JOIN Album ON Artist.ArtistId = Album.ArtistId
+JOIN Track ON Album.AlbumId = Track.AlbumId
+GROUP BY Artist.Name
+ORDER BY SUM(Track.Milliseconds) DESC) MillisecondsList;
+</pre>
+    <br>
+    <h3>Exercise 3: Artist that has earned the most( and how much)</h3>
+    <pre>
+SELECT Artist.Name, SUM(InvoiceLine.Quantity * InvoiceLine.UnitPrice)
+From Artist
+JOIN Album ON Album.ArtistId = Artist.ArtistId
+JOIN Track ON Album.AlbumId = Track.AlbumId
+JOIN InvoiceLine ON Track.TrackId = InvoiceLine.TrackId
+GROUP BY Artist.Name
+ORDER BY SUM(InvoiceLine.Quantity * InvoiceLine.UnitPrice) DESC;
+</pre>
+    Iron Maiden: 138.60<br>
+    As a check:
+    <pre>
+SELECT SUM(AmountEarnedList.amountEarnedPerArtist)
+FROM(
+SELECT Artist.Name, SUM(InvoiceLine.Quantity * InvoiceLine.UnitPrice) AS amountEarnedPerArtist
+From Artist
+JOIN Album ON Album.ArtistId = Artist.ArtistId
+JOIN Track ON Album.AlbumId = Track.AlbumId
+JOIN InvoiceLine ON Track.TrackId = InvoiceLine.TrackId
+GROUP BY Artist.Name
+ORDER BY SUM(InvoiceLine.Quantity * InvoiceLine.UnitPrice) DESC) AmountEarnedList;
+</pre>
+    Is the same as:
+    <pre>
+SELECT SUM(Total)
+FROM Invoice;
+</pre>
+    <h3> Exercise 4: List of employees and their manager</h3>
+    <pre>
+SELECT subordinate.firstName, subordinate.lastName, boss.firstName, boss.lastName
+FROM employee AS subordinate
+JOIN employee AS boss ON subordinate.reportsTo = boss.EmployeeId;
+</pre>
+    <h3> Exercise 5: Employee with the most revenue</h3>
+    Let's look at the customer with the most money spent first:
+    <pre>
+SELECT Customer.FirstName, Customer.LastName, SUM(Invoice.total)
+FROM Customer
+JOIN Invoice ON Customer.CustomerId = Invoice.CustomerId
+GROUP BY Customer.LastName
+ORDER BY SUM(Invoice.total) DESC;
+</pre>
+    Now the rep (employee( with the most revenue:
+    <pre>
+SELECT Employee.FirstName, Employee.LastName, SUM(Invoice.Total)
+FROM Employee
+JOIN Customer ON Employee.EmployeeId = Customer.SupportRepId
+JOIN Invoice ON Customer.CustomerId = Invoice.CustomerId
+GROUP BY Employee.LastName
+ORDER BY SUM(Invoice.Total) DESC;
+</pre>
+    Jane Peacock: 833,04
+    <h3>Exercise 6: Track that is represented most on playlists</h3>
+    <pre>
+SELECT Track.Name, COUNT(PlayListTrack.PlayListId)
+FROM Track
+JOIN PlayListTrack ON PlaylistTrack.TrackId = Track.TrackId
+GROUP BY Track.Name
+ORDER BY COUNT(PlayListTrack.PlayListId)DESC;
+</pre>
+    2 Minutes To Midnight: 13
+    <h3>Exercise 7: Artist that has the most playlist tracks</h3>
+    <pre>
+SELECT Artist.Name, COUNT(PlayListTrack.PlayListId)
+FROM Artist
+JOIN Album ON Artist.ArtistId = Album.ArtistId
+JOIN Track ON Album.AlbumId = Track.AlbumId
+JOIN PlayListTrack ON PlaylistTrack.TrackId = Track.TrackId
+GROUP BY Artist.Name
+ORDER BY COUNT(PlayListTrack.PlayListId)DESC;
+</pre>
+
+    </p>
+    </main>
+</body>
+</html>

@@ -169,8 +169,17 @@ GROUP BY Artist.Name
 ORDER BY COUNT(PlayListTrack.PlayListId)DESC;
 </pre>
         Answer: Iron Maiden: 516 Tracks.
-
-        </p>
+        <h3>Exercise 8: Find the customer that has the most varied taste i.e. the most genres bought</h3>
+        <pre>
+SELECT Customer.FirstName, Customer.LastName, COUNT(DISTINCT Track.GenreId)
+FROM Customer
+JOIN Invoice ON Invoice.CustomerId = Customer.CustomerId
+JOIN InvoiceLine ON Invoice.InvoiceId = InvoiceLine.InvoiceId
+JOIN Track ON InvoiceLine.TrackId = Track.TrackId
+GROUP BY Customer.LastName
+ORDER BY COUNT(DISTINCT Track.GenreId) DESC;
+</pre>
+    </p>
     </main>
 </body>
 </html>

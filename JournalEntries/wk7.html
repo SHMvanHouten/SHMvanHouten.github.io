@@ -1,0 +1,64 @@
+Welcome back to learning Java, and we're back to Java! This lesson examined how you can use Java to communicate to a database. We looked at the basic way to connect to your database using Java, and then we looked at a more practical method using Springframework.jdbc. The code for this weeks lesson is <a href="https://github.com/SHMvanHouten/javatraining/tree/master/src/main/java/com/github/shmvanhouten/lesson7" target="_blank">here.</a>
+
+<h2>Connecting to Databases using just plain Java.</h2>
+Our goal is to get a list of artistId's and artists which we can iterate over and print out. We create the Class DatabaseDemo and in our Main method call the method queryArtists() to give us a List of Artists we can iterate over and print to system.<br>
+<br>
+In order for our Java program to access our database we will have to follow the same steps we followed to connect using just our sql explorer program.
+<ul>
+    <li>Install the driver</li>
+    <li>Configure connection</li>
+    <li>Writing and executing statements</li>
+    <li>Receive and view results</li>
+</ul>
+We have to follow these same steps to communicate to our database with Java.
+<h3> Installing the driver</h3>
+First we have to add the dependency to our pom file:
+<pre>
+&ltdependency&gt
+   &ltgroupId&gtorg.springframework&lt/groupId&gt
+   &ltartifactId&gtspring-jdbc&lt/artifactId&gt
+   &ltversion&gt4.2.7.RELEASE&lt/version&gt
+&lt/dependency&gt
+</pre>
+Specify to the DriverManager (we'll get to that in the connections bit) which JDBC drivers to try to make Connections with.
+In the next part we will be using the DriverManager but we first have to register our jdbc driver to it we do that with:
+<pre>
+Class.forName("com.mysql.cj.jdbc.Driver");
+</pre>
+The Driver class will call its constructor which tries to register itself to the DriverManager. (More in depth explanation <a href="http://www.xyzws.com/javafaq/what-does-classforname-method-do/17" target="_blank">here, scroll to the bottom.</a>)<br>
+Note: the Class.forName method throws a ClassNotFoundException so we will have to catch that. All the DriverManager and Connection methods throw SqlExceptions so I will just ignore those in these examples but do notice that they will have to be caught.
+<h3>Configure connection</h3>
+Now we can use our DriverManager to make a connection to the database. We need to provide the location of the database in the form of a url, a user name (we'll use root) and the password:
+<pre>
+String url = "jdbc:mysql://localhost/Chinook?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=GMT";
+String user = "root";
+Connection connection = DriverManager.getConnection(url, user, Password.getPassword());
+</pre>
+A little bit of faffing about with timezones and ssl and we get our connection!
+<h3>Writing and executing statements</h3>
+Now that we have a connection to our database we can start sending queries to it. For our basic class we will just do one simple SELECT * query.<br>
+Now this is where the basic approach gets a bit messy. We want to put our connection, preparedStatement and resultSet initialisation in their respective try with resources blocks but for legibility I will leave that out.
+<pre>
+String sql = "SELECT * FROM Artist";
+PreparedStatement preparedStatement = connection.prepareStatement(sql);
+ResultSet resultSet = preparedStatement.executeQuery();
+
+while (resultSet.next()) {
+   Integer id = resultSet.getInt("ArtistId");
+   String name = resultSet.getString("Name");
+   Artist artist = new Artist(id, name);
+   artists.add(artist);
+}
+</pre>
+We wrap our statement into a PreparedStatement class. We then execute the query and store it in a ResultSet instance.<br>
+ResultSet has the method next() which we can use in a while loop.<br>
+We made a class called Artist which has a name and an id, and we made a local ArrayList 'artists'  where we can store our Artists.
+Now that we have executed the statement we have to close the resultSet, preparedStatement and connection to avoid resource leaks. Now we can return our artists List to the main method.
+<h3>Recieve and view results</h3>
+The List of artists we have just received from the queryArtists() method we can now iterate over and print our results to the system:
+<pre>
+List&ltArtist&gt artists = demo.queryArtists();
+for (Artist artist : artists) {
+   System.out.println(artist.getArtistId() + " --> " + artist.getName());
+}
+</pre>

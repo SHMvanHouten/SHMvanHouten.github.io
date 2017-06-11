@@ -5,10 +5,10 @@ Our goal is to get a list of artistId's and artists which we can iterate over an
 <br>
 In order for our Java program to access our database we will have to follow the same steps we followed to connect using just our sql explorer program.
 <ul>
-    <li>Install the driver</li>
-    <li>Configure connection</li>
+    <li>Installing the driver</li>
+    <li>Configuring connection</li>
     <li>Writing and executing statements</li>
-    <li>Receive and view results</li>
+    <li>Receiving and viewing results</li>
 </ul>
 We have to follow these same steps to communicate to our database with Java.
 <h3> Installing the driver</h3>
@@ -21,13 +21,13 @@ First we have to add the dependency to our pom file:
 &lt/dependency&gt
 </pre>
 Specify to the DriverManager (we'll get to that in the connections bit) which JDBC drivers to try to make Connections with.
-In the next part we will be using the DriverManager but we first have to register our jdbc driver to it we do that with:
+In the next part we will be using the DriverManager but we first have to register our jdbc driver to it we, do that with:
 <pre>
 Class.forName("com.mysql.cj.jdbc.Driver");
 </pre>
 The Driver class will call its constructor which tries to register itself to the DriverManager. (More in depth explanation <a href="http://www.xyzws.com/javafaq/what-does-classforname-method-do/17" target="_blank">here, scroll to the bottom.</a>)<br>
 Note: the Class.forName method throws a ClassNotFoundException so we will have to catch that. All the DriverManager and Connection methods throw SqlExceptions so I will just ignore those in these examples but do notice that they will have to be caught.
-<h3>Configure connection</h3>
+<h3>Configuring the connection</h3>
 Now we can use our DriverManager to make a connection to the database. We need to provide the location of the database in the form of a url, a user name (we'll use root) and the password:
 <pre>
 String url = "jdbc:mysql://localhost/Chinook?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=GMT";
@@ -54,7 +54,7 @@ We wrap our statement into a PreparedStatement class. We then execute the query 
 ResultSet has the method next() which we can use in a while loop.<br>
 We made a class called Artist which has a name and an id, and we made a local ArrayList 'artists'  where we can store our Artists.
 Now that we have executed the statement we have to close the resultSet, preparedStatement and connection to avoid resource leaks. Now we can return our artists List to the main method.
-<h3>Recieve and view results</h3>
+<h3>Receiving and viewing results</h3>
 The List of artists we have just received from the queryArtists() method we can now iterate over and print our results to the system:
 <pre>
 List&ltArtist&gt artists = demo.queryArtists();
@@ -63,3 +63,83 @@ for (Artist artist : artists) {
 }
 </pre>
 <br>
+<h2>Springframework.Jdbc</h2>
+It is good to see how a database connection is basically built up but we have a better way to do it. "The Spring Framework takes care of all the low-level details that can make JDBC such a tedious API to develop with": <a href="http://docs.spring.io/spring-framework/docs/current/spring-framework-reference/html/jdbc.html#jdbc-introduction" target="_blank">Spring Framework jdbc reference</a>.<br>
+After having added the dependency for the spring framework to our pom file we can get to work.<br>
+<h3>Installing the driver</h3>
+To work with Spring JDBC we have to provide a driver to our DataSource which we will make in the next step.
+<pre>
+Driver driver = new com.mysql.cj.jdbc.Driver();
+</pre>
+<h3>Configuring the connection</h3>
+Instead of using a DriverManager we can use a DataSource. For our purposes we can just use <a "href=http://docs.spring.io/spring-framework/docs/2.5.x/api/org/springframework/jdbc/datasource/SimpleDriverDataSource.html" target="_blank">the SimpleDriverDataSource.</a><br>
+A DataSource is a class that represents a physical data source, the SimpleDriverDataSource will set up our connections for us:
+<pre>
+String url = "jdbc:mysql://localhost/Chinook?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=GMT&nullNamePatternMatchesAll=true";
+String user = "root";
+DataSource dataSource = new SimpleDriverDataSource(driver, url, user, Password.getPassword());
+</pre>
+<h3>Writing and executing statements</h3>
+The JdbcTemplate class offers us a simple way to do our queries and updates. We can set it up with our DataSource.
+<pre>
+JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+</pre>
+Now if we just pull out the jdbcTemplate to become a private field in our SpringDatabaseDemo class we can start making methods to execute queries and updates.
+<h3>Query</h3>
+<pre>
+private List&ltArtist&gt queryArtists() {
+   String sql = "SELECT * FROM Artist";
+   return jdbcTemplate.query(sql, new ArtistRowMapper());
+}
+</pre>
+As you can see, the query method requires a RowMapper class to <a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/jdbc/core/RowMapper.html" target="_blank">map the ResultSet on a per row basis.</a> Let's have a look at what it does:
+<pre>
+public class ArtistRowMapper implements RowMapper&ltArtist&gt {
+   @Override
+   public Artist mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+       Integer id = resultSet.getInt("ArtistId");
+       String name = resultSet.getString("name");
+
+       return new Artist(id, name);
+   }
+}
+</pre>
+So the query() method will return a list where each entry is an Artist object mapped by the ArtistRowMapper.mapRow() method.
+<h3>Inserts: SimpleJdbcInsert</h3>
+We could use the JdbcTemplate.update() or JdbcTemplate.execute() method to add a new Artist to the list but we can also use <a = href="http://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jdbc/core/simple/SimpleJdbcInsert.html" target="_blank">SimpleJdbcInsert</a><br>
+First we have to instantiate the SimpleJdbcInsert class:
+<pre>
+SimpleJdbcInsert insert = new SimpleJdbcInsert(dataSource)
+       .withTableName("Artist")
+       .usingColumns("ArtistId", "Name");
+</pre>
+Now we can reuse the insert object to like this:
+<pre>
+private void addNewArtist(String name) {
+   Integer newArtistId = getNewArtistId();
+
+   Map&ltString, Object&gt values = new HashMap&lt&gt();
+   values.put("ArtistId", newArtistId);
+   values.put("Name", name);
+
+   insert.execute(values);
+}
+</pre>
+The getNewArtistId() method is a simple method that looks for the MAX artistId and returns an int that is 1 higher:
+<pre>
+private Integer getNewArtistId() {
+   String sql = "SELECT MAX(ArtistId) FROM Artist";
+   return jdbcTemplate.queryForObject(sql, Integer.class) + 1;
+}
+</pre>
+<h3>DELETE: JdbcTemplate.update</h3>
+<pre>
+private void deleteArtist(int artistId) {
+   String sql = "DELETE FROM Artist WHERE ArtistId = ?";
+   int numberOfDeletedRows = jdbcTemplate.update(sql, artistId);
+   System.out.println("Number of deleted rows = " + numberOfDeletedRows);
+}
+</pre>
+The reason we use update() is because it returns an int representing the number of rows that have been deleted. Execute will do the same thing but won't give that information back.
+<h3>Prepared Statements: protecting yourself against SQL-injections</h3>
+

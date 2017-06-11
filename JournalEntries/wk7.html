@@ -141,5 +141,53 @@ private void deleteArtist(int artistId) {
 }
 </pre>
 The reason we use update() is because it returns an int representing the number of rows that have been deleted. Execute will do the same thing but won't give that information back.
+<h3>Receiving and viewing results</h3>
+The queryArtists() method returns gives us a list which we can easily iterate over to print it to System again as we saw earlier.
 <h3>Prepared Statements: protecting yourself against SQL-injections</h3>
+I built this <a href="https://github.com/SHMvanHouten/javatraining/blob/master/src/main/java/com/github/shmvanhouten/lesson7/UnsafeAlbumSearcher.java" target ="_blank">unsafe album searcher</a> to show the threat of sql injections and the importance of prepared statements.<br>
+The structure of the Spring jdbc interface already protects from a lot of injections. I could not get anything to work that would allow me to access a column with another name than title because that is hard-coded into the AlbumRowMapper. To show the full danger of sql injections my unsafe album searcher uses the basic way of making a connection.<br>
+<pre>
+public List&ltString&gt unsafeGetAlbumsFromArtist(String artist) {
+   List&ltString&gt albums = new ArrayList<>();
 
+   try {
+        (...)
+
+       String sql = "SELECT Album.title FROM Album JOIN Artist ON Album.ArtistId = Artist.ArtistId WHERE Artist.Name = '" +
+               artist + "'";
+       PreparedStatement preparedStatement = connection.prepareStatement(sql);
+       try (ResultSet resultSet = preparedStatement.executeQuery()) {
+           while (resultSet.next()) {
+               String result = resultSet.getString(1);
+               albums.add(result);
+           }
+       }
+(...)
+   }
+   return albums;
+}
+</pre>
+Using this method we can find all the albums by an artist we give as the argument.<br>
+Unfortunately, the way this method is written we can also put something else into the method argument as we can see in this test:
+<pre>
+@Test
+public void itShouldAllowASqlInjection() throws Exception {
+   UnsafeAlbumSearcher searcher = new UnsafeAlbumSearcher();
+   List<String> albums = searcher.unsafeGetAlbumsFromArtist("' UNION(SELECT Email FROM Customer);-- -");
+   printList(albums);
+}
+</pre>
+The way we wrote the String sql in our unsafeGetAlbumsFromArtist method allow us to enter in an apostrophe, ending the current statement. Using UNION we can now tack on an extra SELECT where we can get a list of every customer's email address, a list of every Customer's first and last names, etc. Imagine if we stored hashed user passwords in this database…<br>
+So that is the reason we use prepared statements, here is what we can change our code to:
+<pre>
+String sql = "SELECT Album.title FROM Album JOIN Artist ON Album.ArtistId = Artist.ArtistId WHERE Artist.Name = ?";
+PreparedStatement preparedStatement = connection.prepareStatement(sql);
+preparedStatement.setString(1, artist);
+</pre>
+In a Spring JdbcTemplate.query() method a prepared statement looks like this:
+<pre>
+public List&ltAlbum&gt getAlbumsFromArtist(String artist) {
+   String sql = "SELECT Album.title FROM Album JOIN Artist ON Album.ArtistId = Artist.ArtistId WHERE Artist.Name = ?";
+   return jdbcTemplate.query(sql, new AlbumRowMapper(), artist);
+}
+</pre>

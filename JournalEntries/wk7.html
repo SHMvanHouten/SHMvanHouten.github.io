@@ -140,7 +140,9 @@ private void deleteArtist(int artistId) {
    System.out.println("Number of deleted rows = " + numberOfDeletedRows);
 }
 </pre>
-The reason we use update() is because it returns an int representing the number of rows that have been deleted. Execute will do the same thing but won't give that information back.
+A useful use of update() is that it returns an int representing the number of rows that have been deleted. <br>
+Notice the question mark in the sql string, that is called a prepared statement, which we will get to shortly.
+
 <h3>Receiving and viewing results</h3>
 The queryArtists() method returns gives us a list which we can easily iterate over to print it to System again as we saw earlier.
 <h3>Prepared Statements: protecting yourself against SQL-injections</h3>
@@ -173,7 +175,7 @@ Unfortunately, the way this method is written we can also put something else int
 @Test
 public void itShouldAllowASqlInjection() throws Exception {
    UnsafeAlbumSearcher searcher = new UnsafeAlbumSearcher();
-   List<String> albums = searcher.unsafeGetAlbumsFromArtist("' UNION(SELECT Email FROM Customer);-- -");
+   List&ltString&gt albums = searcher.unsafeGetAlbumsFromArtist("' UNION(SELECT Email FROM Customer);-- -");
    printList(albums);
 }
 </pre>

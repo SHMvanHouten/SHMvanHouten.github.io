@@ -51,9 +51,9 @@ WHERE AlbumId = 348;
 The thing that allows us to interact with the data in our database is an RDBMS or Relational Database Management System. The one we are using is MySQL, but there are many more out there.<br>
 The relational part is what we can use to get more complex views of our data.
 <h3>Keys</h3>
-In the Album table the primary key is AlbumId, each row has a unique primary key. The every table has a single column that is the primary key.
-A business key is…
-A <a href="https://en.wikipedia.org/wiki/Foreign_key" target="_blank">foreign key</a> is a key that corresponds with a unique key on another table (usually the primary key). In our example the Column artistId corresponds to the primary key ArtistId in the Artist table. Because the foreign key points to a unique row in another table, the corresponding key has to be not nullable and the foreign key has to have an equal value represented in the corresponding column in the other table . This is called <a href="https://en.wikipedia.org/wiki/Referential_integrity" target="_blank">referential integrity</a>.
+In the Album table the primary key is AlbumId, each row has a unique primary key. The every table has a single column that is the primary key.<br>
+A business key is…<br>
+A <a href="https://en.wikipedia.org/wiki/Foreign_key" target="_blank">foreign key</a> is a key that corresponds with a unique key on another table (usually the primary key). In our example the Column artistId corresponds to the primary key ArtistId in the Artist table. Because the foreign key points to a unique row in another table the foreign key has to have an equal value represented in the corresponding column in the other table, or it has to be null. This is called <a href="https://en.wikipedia.org/wiki/Referential_integrity" target="_blank">referential integrity</a>.
 
 <h3>More advanced use of SELECT</h3>
 To link tables together we can use the JOIN ON statement. In this week's exercises. You can find my solutions to this week's exercises <a href="exerciseswk6.html" target="_blank">here</a><br>.

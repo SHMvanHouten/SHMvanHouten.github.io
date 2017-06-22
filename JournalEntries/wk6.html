@@ -1,5 +1,49 @@
-Welcome back to week 6 of learning Java where we will be learning… Not Java but DataBases!<br>
+Welcome back to week 6 of learning Java where we will be learning... Not Java but DataBases!<br>
 
 You can find my solutions to this week's exercises <a href="JournalEntries/exerciseswk6.html" target="_blank">here</a>
 
+
+A database is an organised collection of data. It holds a <a href="https://en.wikipedia.org/wiki/Database_schema" target="_blank">schema</a> which consists of tables.
+Tables in turn consist of columns and rows. Let's look at a picture of a row, this is the first five rows of the table 'Album' from the database we will be working with today: <a href="https://github.com/lerocha/chinook-database" target="_blank"> Chinook</a>.<br>
+<br>
+<table>
+    <tr><td></td><td>v Column v</td><td></td><td></td></tr>
+    <tr><td></td><td>AlbumId</td><td>Title</td><td>ArtistId</td></tr>
+    <tr><td>row ></td><td>1</td><td>For Those About To Rock We Salute You</td><td>1</td></tr>
+    <tr><td></td><td>2</td><td>Balls to the Wall</td><td>2</td></tr>
+    <tr><td></td><td>3</td><td>Restless and Wild</td><td>2</td></tr>
+    <tr><td></td><td>4</td><td>Let There Be Rock</td><td>1</td></tr>
+    <tr><td></td><td>5</td><td>Big Ones</td><td>3</td></tr>
+</table>
+<br>
+
+Each column is just one data type like INT or VARCHAR (string). Each row has one of each column entry. The value can only be null if that is allowed.<br>
+In order to talk to the database we can use the language SQL. We want to be able to Create, Read, Update and Delete (C.R.U.D). This is how we do that using SQL.
+<h3>create: INSERT</h3>
+To insert a value into a table we can use the command INSERT INTO. The first AlbumId that hasn't been taken is 348 (we'll get to how to find that out later.
+<pre>
+INSERT INTO Album
+VALUES (348, "Best Album Ever", 275);
+</pre>
+<h3>read: SELECT</h3>
+The query that has the most body to it is SELECT. And we will get back to it in a bit, for now let's just do a simple one, the query I did to get the table we saw earlier:
+<pre>
+SELECT AlbumId, Title, ArtistId
+FROM Album
+WHERE AlbumId < 6;
+</pre>
+Note: we could have just put * behind the SELECT because those three column names are the only ones in the table.
+<h3>update: UPDATE</h3>
+Let's update our Best Album Ever, in retrospect I don't really like the title. And turns out it was done by a different artist.
+<pre>
+UPDATE Album
+SET Title = "Pretty Good Album", ArtistId = 54
+WHERE AlbumId = 348;
+</pre>
+<h3>Delete: delete</h3>
+Time to delete our fake album:
+<pre>
+DELETE FROM Album
+WHERE AlbumId = 348;
+</pre>
 

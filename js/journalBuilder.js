@@ -1,5 +1,4 @@
 function EntryGetter(entryName){
-    const client = new HttpClient();
     let hasArticleBeenOpened = false;
 
     function closeTheArticle() {
@@ -8,10 +7,14 @@ function EntryGetter(entryName){
     }
 
     function openTheArticle() {
-        client.get('/JournalEntries/' + entryName + ".html", function (response) {
-            let entry = document.getElementById(entryName);
-            entry.innerHTML = response;
-        });
+        let entry = document.getElementById(entryName);
+        fetch('/JournalEntries/' + entryName + ".html")
+            .then(function(response){
+                return response.text();
+            })
+            .then(function(text){
+                entry.innerHTML = text;
+            });
         hasArticleBeenOpened = true;
     }
 
@@ -22,19 +25,6 @@ function EntryGetter(entryName){
         }else{
             openTheArticle();
         }
-    }
-}
-
-function HttpClient() {
-    this.get = function(aUrl, aCallback) {
-        let anHttpRequest = new XMLHttpRequest();
-        anHttpRequest.onreadystatechange = function() {
-            if (anHttpRequest.readyState === 4 && anHttpRequest.status === 200)
-                aCallback(anHttpRequest.responseText);
-        };
-
-        anHttpRequest.open( "GET", aUrl, true );
-        anHttpRequest.send( null );
     }
 }
 

@@ -64,7 +64,7 @@ function JournalBuilder(listOfJournalEntries){
 }
 
 function goToChapter4(){
-    var wk4Title = document.getElementById("wk4Title");
+    const wk4Title = document.getElementById("wk4Title");
     wk4Title.click();
     wk4Title.scrollIntoView();
 }

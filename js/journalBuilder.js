@@ -1,13 +1,22 @@
 function EntryGetter(entryName){
+    let hasArticleBeenFetched = false;
     let hasArticleBeenOpened = false;
 
     function closeTheArticle() {
-        document.getElementById(entryName).innerHTML = "";
+        document.getElementById(entryName).style.display = "none";
         hasArticleBeenOpened = false;
     }
 
-    function openTheArticle() {
+    function openTheArticle(){
         let entry = document.getElementById(entryName);
+        entry.style.display= "block";
+        if(!hasArticleBeenFetched){
+            fetchArticle(entry);
+        }
+        hasArticleBeenOpened = true;
+    }
+
+    function fetchArticle(entry) {
         fetch('/JournalEntries/' + entryName + ".html")
             .then(function(response){
                 return response.text();
@@ -15,11 +24,10 @@ function EntryGetter(entryName){
             .then(function(text){
                 entry.innerHTML = text;
             });
-        hasArticleBeenOpened = true;
+        hasArticleBeenFetched = true;
     }
 
-    this.getArticle = function(){
-
+    this.toggleArticle = function(){
         if(hasArticleBeenOpened){
             closeTheArticle();
         }else{
@@ -40,7 +48,7 @@ function JournalBuilder(listOfJournalEntries){
             h2.innerHTML = listOfJournalEntries[entryName];
             h2.id = entryName + "Title";
             let getEntry = new EntryGetter(entryName);
-            h2.addEventListener("click",getEntry.getArticle);
+            h2.addEventListener("click",getEntry.toggleArticle);
 
             let article = document.createElement("article");
             article.id = entryName;

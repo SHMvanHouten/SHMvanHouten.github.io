@@ -8,15 +8,15 @@ function JournalBuilder(listOfJournalEntries){
         Object.keys(listOfJournalEntries).forEach(function(entryName){
             let section = document.createElement("section");
 
-            let h2 = document.createElement("h2");
-            h2.innerHTML = listOfJournalEntries[entryName];
-            h2.id = entryName + "Title";
-            let articleToggler = new ArticleToggler(entryName, entryGetter);
-            h2.addEventListener("click",articleToggler.toggleArticle);
-
             let article = document.createElement("article");
             article.id = entryName;
             article.style.display = "none";
+
+            let h2 = document.createElement("h2");
+            h2.innerHTML = listOfJournalEntries[entryName];
+            h2.id = entryName + "Title";
+            let articleToggler = new ArticleToggler(entryName, entryGetter, article);
+            h2.addEventListener("click",articleToggler.toggleArticle);
 
             section.appendChild(h2);
             section.appendChild(article);

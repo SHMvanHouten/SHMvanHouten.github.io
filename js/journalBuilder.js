@@ -1,4 +1,4 @@
-function EntryGetter(entryName){
+function ArticleToggler(entryName){
     let hasArticleBeenFetched = false;
     let hasArticleBeenOpened = false;
 
@@ -8,23 +8,23 @@ function EntryGetter(entryName){
     }
 
     function openTheArticle(){
-        let entry = document.getElementById(entryName);
+        let entry = document.getElementById(entryName)
         entry.style.display= "block";
         if(!hasArticleBeenFetched){
-            fetchArticle(entry);
+            fetchArticle(entryName)
+                .then(function(text){
+                    entry.innerHTML = text;
+                });
+            hasArticleBeenFetched = true;
         }
         hasArticleBeenOpened = true;
     }
 
-    function fetchArticle(entry) {
-        fetch('/JournalEntries/' + entryName + ".html")
+    function fetchArticle() {
+        return fetch('/JournalEntries/' + entryName + ".html")
             .then(function(response){
                 return response.text();
             })
-            .then(function(text){
-                entry.innerHTML = text;
-            });
-        hasArticleBeenFetched = true;
     }
 
     this.toggleArticle = function(){
@@ -47,11 +47,12 @@ function JournalBuilder(listOfJournalEntries){
             let h2 = document.createElement("h2");
             h2.innerHTML = listOfJournalEntries[entryName];
             h2.id = entryName + "Title";
-            let getEntry = new EntryGetter(entryName);
-            h2.addEventListener("click",getEntry.toggleArticle);
+            let articleToggler = new ArticleToggler(entryName);
+            h2.addEventListener("click",articleToggler.toggleArticle);
 
             let article = document.createElement("article");
             article.id = entryName;
+            article.style.display = "none";
 
             section.appendChild(h2);
             section.appendChild(article);
